@@ -1,9 +1,12 @@
+#!/bin/bash
+
 function install() {
     sudo apt-get update -y && sudo apt-get install -y wrk
 }
 
 
 function benchmark() {
+    echo "Benchmarking..."
     # A function to benchmark wrk's performance
     # Usage: benchmark <url> <duration> <threads> <connections>
     # Writes results every second to a file
