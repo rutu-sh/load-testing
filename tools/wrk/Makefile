@@ -5,7 +5,7 @@ setup:
 
 benchmark:
 	echo "Benchmarking..."
-	${CURDIR}/benchmark.sh --latency -t ${THREADS} -d ${DURATION} -c ${CONNECTIONS} ${URL}
+	${CURDIR}/benchmark.sh --latency -t $(THREADS) -d $(DURATION) -c $(CONNECTIONS) ${URL}
 	echo "Benchmarking done"
 
 
@@ -14,7 +14,7 @@ run-benchmarking-scenarios:
 		mkdir -p ${CURDIR}/results/scenario-$$scenario; \
 		echo "Running benchmarking scenario: $$scenario"; \
 		echo "Scenario $$scenario" > ${CURDIR}/results/scenario-$$scenario/README.md; \
-		${MAKE} benchmark \
+		$(MAKE) benchmark \
 			THREADS=$$(echo $$scenario | cut -d '-' -f 1) \
 			CONNECTIONS=$$(echo $$scenario | cut -d '-' -f 2) \
 			DURATION=$$(echo $$scenario | cut -d '-' -f 3) \
