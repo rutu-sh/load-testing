@@ -1,11 +1,11 @@
 #!/bin/bash
 
-function install() {
+function install {
     sudo apt-get update -y && sudo apt-get install -y wrk
 }
 
 
-function benchmark() {
+function benchmark {
     echo "Benchmarking..."
     # A function to benchmark wrk's performance
     # Usage: benchmark <url> <duration> <threads> <connections>
@@ -34,7 +34,7 @@ function benchmark() {
         pids+=($!)
         { exec >"$memf"; smem -H -U "$USER" -c 'pid pss' -P 'k6 run' | {
             grep "$pid" || echo 0; } | awk '{ print $NF }'; } &
-        # pids+=($!)
+        pids+=($!)
         # { exec >"$vusf"; { curl -fsSL http://localhost:6565/v1/metrics/vus 2>/dev/null || echo '{}'
         #     } | jq '.data.attributes.sample.value // 0'; } &
         # pids+=($!)
