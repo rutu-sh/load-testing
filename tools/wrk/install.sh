@@ -1,7 +1,23 @@
 #!/bin/bash
+# External dependencies:
+# - https://www.selenic.com/smem/
+# - https://stedolan.github.io/jq/
+set -eEuo pipefail
+
+trap 'cleanup; exit 0' EXIT
+trap 'trap - INT; cleanup; kill -INT $$' INT
+trap 'trap - TERM; cleanup; kill -TERM $$' TERM
+
+# Create temp files to store the output of each collection command.
+cpuf=$(mktemp)
+memf=$(mktemp)
+
+function cleanup() {
+  rm -f "$cpuf" "$memf" 
+}
 
 function install {
-    sudo apt-get update -y && sudo apt-get install -y wrk smem
+    sudo apt-get update -y && sudo apt-get install -y wrk smem jq
 }
 
 
