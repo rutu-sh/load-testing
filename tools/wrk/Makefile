@@ -3,5 +3,5 @@ setup:
 
 benchmark:
 	echo "Benchmarking..."
-	${CURDIR}/install.sh benchmark ${URL} ${DURATION} ${THREADS} ${CONNECTIONS} ${LOG_FILE}
+	${CURDIR}/benchmark.sh -t ${THREADS} -d ${DURATION} -c ${CONNECTIONS} ${URL}
 	echo "Benchmarking done"
