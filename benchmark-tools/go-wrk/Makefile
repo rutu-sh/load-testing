@@ -1,9 +1,5 @@
 BENCHMARKING_SCNARIOS=30-200 30-400
 
-ifndef URL
-$(error URL is not set)
-endif
-
 setup:
 	cd ../../setup/cloudlab-tools/tools/generic && \
 	$(MAKE) install-go
