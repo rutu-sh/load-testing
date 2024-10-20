@@ -18,7 +18,7 @@ run-benchmarking-scenarios:
 			THREADS=$$(echo $$scenario | cut -d '-' -f 1) \
 			CONNECTIONS=$$(echo $$scenario | cut -d '-' -f 2) \
 			DURATION=$$(echo $$scenario | cut -d '-' -f 3) \
-			URL=${URL}; \	
+			URL=${URL}; \
 		echo "Benchmarking scenario $$scenario done"; \
 		mv out.txt ${CURDIR}/results/scenario-$$scenario/out.txt; \
 		mv results.csv ${CURDIR}/results/scenario-$$scenario/results.csv; \
