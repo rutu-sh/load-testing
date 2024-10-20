@@ -1,7 +1,7 @@
 BENCHMARKING_SCNARIOS=30-200 30-400
 
 setup:
-	cd ${CURDIR}/../../setup/cloudlab-tools/tools/generic && \
+	cd ../../setup/cloudlab-tools/tools/generic && \
 	$(MAKE) install-go
 	${CURDIR}/install.sh install
 
