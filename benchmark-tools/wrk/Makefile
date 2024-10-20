@@ -1,7 +1,7 @@
 BENCHMARKING_SCNARIOS=5-30-200 10-30-200
 
 setup:
-	./${CURDIR}/install.sh install
+	${CURDIR}/install.sh install
 
 benchmark:
 	echo "Benchmarking..."
