@@ -37,7 +37,7 @@ while true; do
   { exec >"$cpuf"; top -b -n 2 -d "$sint" -p "$pid" | {
       grep "$pid" || echo; } | tail -1 | awk '{print (NF>0 ? $9 : "0")}'; } &
   pids+=($!)
-  { exec >"$memf"; smem -H -U "$USER" -c 'pid pss' -P 'k6 run' | {
+  { exec >"$memf"; smem -H -U "$USER" -c 'pid pss' -P 'wrk ' | {
       grep "$pid" || echo 0; } | awk '{ print $NF }'; } &
   pids+=($!)
   wait "${pids[@]}"

@@ -22,4 +22,5 @@ run-benchmarking-scenarios:
 		echo "Benchmarking scenario $$scenario done"; \
 		mv out.txt ${CURDIR}/results/scenario-$$scenario/out.txt; \
 		mv results.csv ${CURDIR}/results/scenario-$$scenario/results.csv; \
+		cat ${CURDIR}/results/scenario-$$scenario/out.txt | grep "Requests/sec" >> ${CURDIR}/results/scenario-$$scenario/rps; \
 	done
