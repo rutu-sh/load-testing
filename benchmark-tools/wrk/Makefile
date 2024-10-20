@@ -1,4 +1,4 @@
-BENCHMARKING_SCNARIOS=1-60-200 5-60-200 10-60-200
+BENCHMARKING_SCNARIOS=1-120-200 5-120-200 10-120-200 1-120-400 5-120-400 10-120-400 1-120-600 5-120-600 10-120-600
 
 setup:
 	${CURDIR}/install.sh install
@@ -23,6 +23,7 @@ run-benchmarking-scenarios:
 		mv out.txt ${CURDIR}/results/scenario-$$scenario/out.txt; \
 		mv results.csv ${CURDIR}/results/scenario-$$scenario/results.csv; \
 		grep "Requests/sec" ${CURDIR}/results/scenario-$$scenario/out.txt | awk '{print $$2}' >> ${CURDIR}/results/scenario-$$scenario/rps; \
+		sleep 10; \
 	done
 
 clean:

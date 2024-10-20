@@ -8,9 +8,10 @@ import matplotlib.pyplot as plt
 def get_experiment_metadata(dir: str, tool: str) -> str:
     rps = ""
     metadata = ""
+    scenario_name = dir.split('/')[-1]
     if tool == "wrk":
         # then the directory name would be of the form scenario-<n_threads>-<n_duration>-<n_connections>
-        parts = dir.split('-')
+        parts = scenario_name.split('-')
         n_threads = parts[1]
         n_duration = parts[2]
         n_connections = parts[3]
@@ -19,7 +20,7 @@ def get_experiment_metadata(dir: str, tool: str) -> str:
 
     elif tool == "go-wrk":
         # then the directory name would be of the form scenario-<n_duration>-<n_connections>
-        parts = dir.split('-')
+        parts = scenario_name.split('-')
         n_duration = parts[1]
         n_connections = parts[2]
 
@@ -27,7 +28,7 @@ def get_experiment_metadata(dir: str, tool: str) -> str:
 
     elif tool == "k6":
         # then the directory name would be of the form scenario-<n_duration>-<n_vus>
-        parts = dir.split('-')
+        parts = scenario_name.split('-')
         n_duration = parts[1]
         n_vus = parts[2]
 
@@ -49,13 +50,13 @@ def plot_csv(dir: str, output: str, tool: str):
 
     fig, ax1 = plt.subplots()
 
-    sns.lineplot(x='Time (s)', y='CPU (%)', data=df, ax=ax1, color=colors[0], label='CPU (%)')
+    sns.lineplot(x='Time (s)', y='CPU (%)', data=df, ax=ax1, color=colors[0], markers=True)
     ax1.set_xlabel('Time (s)')
     ax1.set_ylabel('CPU (%)', color=colors[0])
     ax1.tick_params(axis='y', labelcolor=colors[0])
 
     ax2 = ax1.twinx()
-    sns.lineplot(x='Time (s)', y='MEM (kB)', data=df, ax=ax2, color=colors[1], label='MEM (kB)')
+    sns.lineplot(x='Time (s)', y='MEM (kB)', data=df, ax=ax2, color=colors[1], markers=True)
     ax2.set_ylabel('MEM (kB)', color=colors[1])
     ax2.tick_params(axis='y', labelcolor=colors[1])
 
@@ -65,6 +66,7 @@ def plot_csv(dir: str, output: str, tool: str):
 
     fig.tight_layout()
     plt.savefig(output)
+    plt.close()
 
 
 def parse_args():

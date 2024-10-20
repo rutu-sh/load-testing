@@ -13,6 +13,7 @@ run-all-benchmarking-scenarios:
 	for app in ${APPS}; do \
 		cd ${CURDIR}/$$app && \
 		$(MAKE) run-benchmarking-scenarios; \
+		sleep 10; \
 	done
 
 clean:
