@@ -16,8 +16,8 @@ run-benchmarking-scenarios:
 		echo "Scenario $$scenario" > ${CURDIR}/results/scenario-$$scenario/README.md; \
 		$(MAKE) benchmark \
 			THREADS=$$(echo $$scenario | cut -d '-' -f 1) \
-			CONNECTIONS=$$(echo $$scenario | cut -d '-' -f 2) \
-			DURATION=$$(echo $$scenario | cut -d '-' -f 3) \
+			DURATION=$$(echo $$scenario | cut -d '-' -f 2) \
+			CONNECTIONS=$$(echo $$scenario | cut -d '-' -f 3) \
 			URL=${URL}; \
 		echo "Benchmarking scenario $$scenario done"; \
 		mv out.txt ${CURDIR}/results/scenario-$$scenario/out.txt; \
