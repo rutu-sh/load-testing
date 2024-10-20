@@ -1,5 +1,9 @@
 BENCHMARKING_SCNARIOS=5-30-200 10-30-200
 
+ifndef URL
+$(error URL is not set)
+endif
+
 setup:
 	${CURDIR}/install.sh install
 
