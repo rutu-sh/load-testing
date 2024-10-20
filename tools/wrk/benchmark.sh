@@ -16,6 +16,9 @@ cleanup() {
   rm -f "$cpuf" "$memf" 
 }
 
+rm -f results.csv
+touch results.csv
+
 # 5s is the default interval between samples.
 # Note that this might be greater if either smem or the k6 API takes more time
 # than this to return a response.
@@ -27,7 +30,7 @@ pid="$!"
 # Run the collection processes in parallel to avoid blocking.
 # For details see https://stackoverflow.com/a/68316571
 
-echo '"Time (s)","CPU (%)","MEM (kB)"'
+echo '"Time (s)","CPU (%)","MEM (kB)"' >> results.csv
 while true; do
   etimes=$(ps -p "$pid" --no-headers -o etimes | awk '{ print $1 }')
   pids=()
@@ -38,5 +41,5 @@ while true; do
       grep "$pid" || echo 0; } | awk '{ print $NF }'; } &
   pids+=($!)
   wait "${pids[@]}"
-  echo "${etimes},$(cat "$cpuf"),$(cat "$memf")"
+  echo "${etimes},$(cat "$cpuf"),$(cat "$memf")" >> results.csv
 done
