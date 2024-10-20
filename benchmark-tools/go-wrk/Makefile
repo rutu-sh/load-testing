@@ -1,4 +1,4 @@
-BENCHMARKING_SCNARIOS=30-200 30-400
+BENCHMARKING_SCNARIOS=60-200 60-400
 
 setup:
 	cd ../../setup/cloudlab-tools/tools/generic && \
