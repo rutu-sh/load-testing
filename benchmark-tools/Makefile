@@ -13,7 +13,8 @@ run-all-benchmarking-scenarios:
 	for app in ${APPS}; do \
 		cd ${CURDIR}/$$app && \
 		$(MAKE) run-benchmarking-scenarios; \
-		sleep 10; \
+		echo "Sleeping for 60 seconds..."; \
+		sleep 60; \
 	done
 
 clean:
