@@ -1,0 +1,20 @@
+Running 600s test @ http://192.168.1.2
+  1000 goroutine(s) running concurrently
+88980526 requests in 9m56.321021984s, 66.36GB read
+Requests/sec:		149215.81
+Transfer/sec:		113.95MB
+Overall Requests/sec:	147933.95
+Overall Transfer/sec:	112.97MB
+Fastest Request:	137µs
+Avg Req Time:		6.701ms
+Slowest Request:	270.303ms
+Number of Errors:	90728
+Error Counts:		cannot assign requested address=90728
+10%:			199µs
+50%:			226µs
+75%:			239µs
+99%:			252µs
+99.9%:			252µs
+99.9999%:		253µs
+99.99999%:		253µs
+stddev:			9.084ms
