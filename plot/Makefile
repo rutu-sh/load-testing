@@ -1,4 +1,4 @@
-APPS=go-wrk k6 wrk
+APPS=go-wrk k6 wrk wrk2
 
 generate-result-plots:
 	echo "Generating result plots..." && \

@@ -1,4 +1,4 @@
-APPS=go-wrk k6 wrk 
+APPS=go-wrk k6 wrk wrk2
 
 setup:
 	cd ${CURDIR}/${APP_NAME} && \

@@ -33,6 +33,16 @@ def get_experiment_metadata(dir: str, tool: str) -> str:
         n_vus = parts[2]
 
         metadata = f"VUs: {n_vus}, Duration: {n_duration}"
+
+    elif tool == "wrk2":
+        # then the directory name would be of the form scenario-<n_threads>-<n_duration>-<n_connections>-<n_rate>
+        parts = scenario_name.split('-')
+        n_threads = parts[1]
+        n_duration = parts[2]
+        n_connections = parts[3]
+        n_rate = parts[4]
+
+        metadata = f"Threads: {n_threads}, Connections: {n_connections}, Duration: {n_duration}, Rate: {n_rate}"
     
     # read the dir/rps file and return the value
     with open(f"{dir}/rps", 'r') as f:

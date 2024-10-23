@@ -7,7 +7,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 
-TOOLS = ["wrk", "go-wrk", "k6"]
+TOOLS = ["wrk", "go-wrk", "k6", "wrk2"]
 
 
 # for every tool, and for every scenario, calculate the average CPU Load and Memory Usage 

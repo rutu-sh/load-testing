@@ -1,11 +1,11 @@
-BENCHMARKING_SCNARIOS=10-600s-800 20-600s-800 30-600s-800 20-600s-2000
+BENCHMARKING_SCNARIOS=10-600s-200-20000
 
 setup:
 	${CURDIR}/install.sh install
 
 benchmark:
 	echo "Benchmarking..."
-	${CURDIR}/benchmark.sh --latency -t $(THREADS) -d $(DURATION) -c $(CONNECTIONS) ${URL}
+	${CURDIR}/benchmark.sh --latency -t $(THREADS) -d $(DURATION) -c $(CONNECTIONS) -R $(RATE) ${URL}
 	echo "Benchmarking done"
 
 
@@ -18,6 +18,7 @@ run-benchmarking-scenarios:
 			THREADS=$$(echo $$scenario | cut -d '-' -f 1) \
 			DURATION=$$(echo $$scenario | cut -d '-' -f 2) \
 			CONNECTIONS=$$(echo $$scenario | cut -d '-' -f 3) \
+			RATE=$$(echo $$scenario | cut -d '-' -f 4) \
 			URL=${URL}; \
 		echo "Benchmarking scenario $$scenario done"; \
 		mv out.txt ${CURDIR}/results/scenario-$$scenario/out.txt; \
