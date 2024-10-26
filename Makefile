@@ -19,6 +19,7 @@ copy-results:
 
 perform-experiment:
 	@echo "Performing experiment ${EXPERIMENT_NAME} for tool ${TOOL}..."
+	mkdir -p ${EXPERIMENT_DIR} && \
 	jq -r '.${TOOL}[] | select(.name == "${EXPERIMENT_NAME}") | .parameters[]' experiments.json > ${EXPERIMENT_DIR}/parameters.json
 	TOOL=${TOOL} BENCHMARK_URL=${BENCHMARK_URL} EXPRIMENT_DIR=${EXPERIMENT_DIR} ./benchmark.sh $(jq -r '.${TOOL}[] | select(.name == "${EXPERIMENT_NAME}") | .parameters[]' experiments.json | xargs) && \
 	echo "Experiment done"
