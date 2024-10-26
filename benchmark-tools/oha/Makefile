@@ -1,11 +1,12 @@
-BENCHMARKING_SCNARIOS=10-600s-800 20-600s-800 30-600s-800 20-600s-2000
+URL=http://192.168.1.2
+DEVICE=$(ip route get ${URL} | awk '{print $$3}' | head -n 1)
 
 setup:
 	${CURDIR}/install.sh install
 
 benchmark:
 	echo "Benchmarking..."
-	${CURDIR}/benchmark.sh  ${URL}
+	BENCHMARK_URL=${URL} ${CURDIR}/benchmark.sh -z ${DURATION}s --latency-correction --disable-keepalive 
 	echo "Benchmarking done"
 
 
