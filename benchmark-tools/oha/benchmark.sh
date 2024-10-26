@@ -34,7 +34,7 @@ device=$(ip route get "$url_without_protocol" | awk '{for (i=1; i<NF; i++) if ($
 
 # Maximum bandwidth capacity in KB/s (e.g., 1 Gbps = 125000 KB/s)
 # Get the maximum bandwidth capacity using ethtool
-max_bandwidth_mbps=$(ethtool "$device" | awk '/Speed:/ {print $2}' | sed 's/Mb\/s//')
+max_bandwidth_mbps=$(sudo ethtool "$device" | awk '/Speed:/ {print $2}' | sed 's/Mb\/s//')
 max_bandwidth_kbps=$((max_bandwidth_mbps * 1024 / 8))
 
 echo "using device $device with max bandwidth $max_bandwidth_kbps KB/s"
@@ -49,7 +49,7 @@ echo '"Time (s)","CPU (%)","MEM (KB)","Bandwidth (KB/s)","Bandwidth Utilization 
 while true; do
   etimes=$(ps -p "$pid" --no-headers -o etimes | awk '{ print $1 }')
   pids=()
-  { exec >"$bandwidthf"; ifstat -i "$device" "$sint" 1 | awk 'NR==3 {print $1 + $2}'; } &
+  { exec >"$bandwidthf"; sudo ifstat -i "$device" "$sint" 1 | awk 'NR==3 {print $1 + $2}'; } &
   pids+=($!)
   { exec >"$cpuf"; top -b -n 2 -d "$sint" -p "$pid" | {
       grep "$pid" || echo; } | tail -1 | awk '{print (NF>0 ? $9 : "0")}'; } &
