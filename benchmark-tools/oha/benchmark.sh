@@ -57,7 +57,7 @@ while true; do
   { exec >"$memf"; smem -H -U "$USER" -c 'pid pss' -P 'oha ' | {
       grep "$pid" || echo 0; } | awk '{ sum += $NF } END { print sum }'; } &
   pids+=($!)
-  { exec >"$sockf"; ss -tp | grep -c oha; } &
+  { exec >"$sockf"; sudo ss -tp | grep -c oha; } &
   pids+=($!)
   wait "${pids[@]}"
   bandwidth=$(cat "$bandwidthf")
