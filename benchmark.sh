@@ -48,7 +48,7 @@ echo "using device $device with max bandwidth $max_bandwidth_kbps KB/s"
 # Run the collection processes in parallel to avoid blocking.
 # For details see https://stackoverflow.com/a/68316571
 
-$tool "$@" ${BENCHMARK_URL} >out.txt 2>&1 &
+"$tool" "$@" ${BENCHMARK_URL} >out.txt 2>&1 &
 pid="$!"
 
 echo '"Time (s)","CPU (%)","MEM (KB)","Bandwidth (KB/s)","Bandwidth Utilization (%)","Open Sockets"' >> results.csv
