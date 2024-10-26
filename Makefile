@@ -1,7 +1,9 @@
 CL_DIR=${CURDIR}/.cloudlab
 TOOLS_SRC_DIR=${CURDIR}/setup/cloudlab-tools
 BENCHMARK_URL=http://192.168.1.2
+JQ_CMD := jq -r '.${TOOL}[] | select(.name == "${EXPERIMENT_NAME}") | .parameters[]' experiments.json
 
+PARAMETERS := $(shell $(JQ_CMD))
 
 include setup/cloudlab-tools/cloudlab_tools.mk
 
@@ -20,8 +22,8 @@ copy-results:
 perform-experiment:
 	@echo "Performing experiment ${EXPERIMENT_NAME} for tool ${TOOL}..."
 	mkdir -p ${EXPERIMENT_DIR} && \
-	jq -r '.${TOOL}[] | select(.name == "${EXPERIMENT_NAME}") | .parameters[]' experiments.json > ${EXPERIMENT_DIR}/parameters.json
-	TOOL=${TOOL} BENCHMARK_URL=${BENCHMARK_URL} EXPRIMENT_DIR=${EXPERIMENT_DIR} ./benchmark.sh $(jq -r '.${TOOL}[] | select(.name == "${EXPERIMENT_NAME}") | .parameters[]' experiments.json | xargs) && \
+	jq -r '.${TOOL}[] | select(.name == "${EXPERIMENT_NAME}")' experiments.json > ${EXPERIMENT_DIR}/parameters.json
+	TOOL=${TOOL} BENCHMARK_URL=${BENCHMARK_URL} EXPRIMENT_DIR=${EXPERIMENT_DIR} ./benchmark.sh $(PARAMETERS) && \
 	echo "Experiment done"
 
 
