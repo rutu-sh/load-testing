@@ -61,7 +61,7 @@ while true; do
   pids+=($!)
   wait "${pids[@]}"
   bandwidth=$(cat "$bandwidthf")
-  bandwidth_utilization=$(awk -v bw="$bandwidth" -v max_bw="$MAX_BANDWIDTH_KBPS" 'BEGIN { printf "%.2f", (bw / max_bw) * 100 }')
+  bandwidth_utilization=$(awk -v bw="$bandwidth" -v max_bw="$max_bandwidth_kbps" 'BEGIN { printf "%.2f", (bw / max_bw) * 100 }')
   open_sockets=$(cat "$sockf")
   echo "${etimes},$(cat "$cpuf"),$(cat "$memf"),${bandwidth},${bandwidth_utilization},${open_sockets}" >> results.csv
 done
