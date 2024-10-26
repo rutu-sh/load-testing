@@ -29,6 +29,7 @@ sint="${BENCH_SAMPLE_INTERVAL:-5}"
 
 url=${BENCHMARK_URL:-http://localhost:8080}
 url_without_protocol=$(echo "$url" | sed 's/http[s]*:\/\///')
+echo "benchmarking $url"
 device=$(ip route get "$url_without_protocol" | awk '{for (i=1; i<NF; i++) if ($i == "dev") print $(i+1)}')
 
 # Maximum bandwidth capacity in KB/s (e.g., 1 Gbps = 125000 KB/s)
