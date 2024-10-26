@@ -1,0 +1,14 @@
+{
+    "oha": [
+        {
+            "name": "oha-1",
+            "description": "oha-1 basic oha experiment",
+            "parameters": [
+                "--no-tui",
+                "--latency-correction",
+                "-z 60s",
+                "-q 1000000"
+            ]
+        }
+    ]
+}

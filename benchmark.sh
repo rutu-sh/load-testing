@@ -38,6 +38,11 @@ if [ -z "${TOOL:-}" ]; then
 fi
 tool=${TOOL}
 
+exp_dir="${EXPERIMENT_DIR:-experiments}/$(date +%Y%m%d-%H%M%S)"
+mkdir -p "$exp_dir"
+results_file="${exp_dir}/results.csv"
+out_file="${exp_dir}/out.txt"
+
 # Maximum bandwidth capacity in KB/s (e.g., 1 Gbps = 125000 KB/s)
 # Get the maximum bandwidth capacity using ethtool
 max_bandwidth_mbps=$(sudo ethtool "$device" | awk '/Speed:/ {print $2}' | sed 's/Mb\/s//')
@@ -48,10 +53,10 @@ echo "using device $device with max bandwidth $max_bandwidth_kbps KB/s"
 # Run the collection processes in parallel to avoid blocking.
 # For details see https://stackoverflow.com/a/68316571
 
-"$tool" "$@" ${BENCHMARK_URL} >out.txt 2>&1 &
+"$tool" "$@" ${BENCHMARK_URL} >$out_file 2>&1 &
 pid="$!"
 
-echo '"Time (s)","CPU (%)","MEM (KB)","Bandwidth (KB/s)","Bandwidth Utilization (%)","Open Sockets"' >> results.csv
+echo '"Time (s)","CPU (%)","MEM (KB)","Bandwidth (KB/s)","Bandwidth Utilization (%)","Open Sockets"' >> $results_file
 while true; do
   etimes=$(ps -p "$pid" --no-headers -o etimes | awk '{ print $1 }')
   pids=()
@@ -69,5 +74,5 @@ while true; do
   bandwidth=$(cat "$bandwidthf")
   bandwidth_utilization=$(awk -v bw="$bandwidth" -v max_bw="$max_bandwidth_kbps" 'BEGIN { printf "%.2f", (bw / max_bw) * 100 }')
   open_sockets=$(cat "$sockf")
-  echo "${etimes},$(cat "$cpuf"),$(cat "$memf"),${bandwidth},${bandwidth_utilization},${open_sockets}" >> results.csv
+  echo "${etimes},$(cat "$cpuf"),$(cat "$memf"),${bandwidth},${bandwidth_utilization},${open_sockets}" >> $results_file
 done
