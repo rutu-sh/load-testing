@@ -32,6 +32,12 @@ url_without_protocol=$(echo "$url" | sed 's/http[s]*:\/\///')
 echo "benchmarking $url"
 device=$(ip route get "$url_without_protocol" | awk '{for (i=1; i<NF; i++) if ($i == "dev") print $(i+1)}')
 
+if [ -z "${TOOL:-}" ]; then
+  echo "TOOL environment variable must be set to specify the tool to benchmark"
+  exit 1
+fi
+tool=${TOOL}
+
 # Maximum bandwidth capacity in KB/s (e.g., 1 Gbps = 125000 KB/s)
 # Get the maximum bandwidth capacity using ethtool
 max_bandwidth_mbps=$(sudo ethtool "$device" | awk '/Speed:/ {print $2}' | sed 's/Mb\/s//')
@@ -42,7 +48,7 @@ echo "using device $device with max bandwidth $max_bandwidth_kbps KB/s"
 # Run the collection processes in parallel to avoid blocking.
 # For details see https://stackoverflow.com/a/68316571
 
-oha "$@" ${BENCHMARK_URL} >out.txt 2>&1 &
+$tool "$@" ${BENCHMARK_URL} >out.txt 2>&1 &
 pid="$!"
 
 echo '"Time (s)","CPU (%)","MEM (KB)","Bandwidth (KB/s)","Bandwidth Utilization (%)","Open Sockets"' >> results.csv
@@ -54,10 +60,10 @@ while true; do
   { exec >"$cpuf"; top -b -n 2 -d "$sint" -p "$pid" | {
       grep "$pid" || echo; } | tail -1 | awk '{print (NF>0 ? $9 : "0")}'; } &
   pids+=($!)
-  { exec >"$memf"; smem -H -U "$USER" -c 'pid pss' -P 'oha ' | {
+  { exec >"$memf"; smem -H -U "$USER" -c 'pid pss' -P '${tool} ' | {
       grep "$pid" || echo 0; } | awk '{ sum += $NF } END { print sum }'; } &
   pids+=($!)
-  { exec >"$sockf"; sudo ss -tp | grep -c oha; } &
+  { exec >"$sockf"; sudo ss -tp | grep -c "$tool"; } &
   pids+=($!)
   wait "${pids[@]}"
   bandwidth=$(cat "$bandwidthf")
