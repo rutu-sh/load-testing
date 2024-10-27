@@ -5,9 +5,9 @@
 # - iproute2 (for ss command)
 set -eEuo pipefail
 
-trap 'cleanup; exit 0' EXIT
-trap 'trap - INT; cleanup; kill -INT $$' INT
-trap 'trap - TERM; cleanup; kill -TERM $$' TERM
+trap 'last_command=$BASH_COMMAND; signal_received="EXIT"; cleanup; exit 0' EXIT
+trap 'last_command=$BASH_COMMAND; signal_received="INT"; trap - INT; cleanup; kill -INT $$' INT
+trap 'last_command=$BASH_COMMAND; signal_received="TERM"; trap - TERM; cleanup; kill -TERM $$' TERM
 
 # Create temp files to store the output of each collection command.
 cpuf=$(mktemp)
@@ -16,6 +16,10 @@ bandwidthf=$(mktemp)
 sockf=$(mktemp)
 
 cleanup() {
+  exit_status=$?
+  echo "Received signal: $signal_received"
+  echo "Last command: $last_command"
+  echo "Exit status: $exit_status"
   rm -f "$cpuf" "$memf" "$bandwidthf" "$sockf"
 }
 
@@ -61,23 +65,38 @@ while true; do
   # Check if the process is still running
   if ! ps -p "$pid" > /dev/null; then
     echo "Process $pid has terminated. Exiting loop."
-    break
+    exit 0
   fi
+  
+  echo "Collecting metrics for process $pid"
+
   etimes=$(ps -p "$pid" --no-headers -o etimes | awk '{ print $1 }')
   pids=()
-  { exec >"$bandwidthf"; sudo ifstat -i "$device" "$sint" 1 2> error.log| awk 'NR==3 {print $1 + $2}'; } &
+  { exec >"$bandwidthf"; sudo ifstat -i "$device" "$sint" 1 | awk 'NR==3 {print $1 + $2}'; } &
   pids+=($!)
-  { exec >"$cpuf"; top -b -n 2 -d "$sint" -p "$pid" 2> error.log | {
-      grep "$pid" 2> error.log || echo; } | tail -1 | awk '{print (NF>0 ? $9 : "0")}' 2> error.log; } &
+  { exec >"$cpuf"; top -b -n 2 -d "$sint" -p "$pid" | {
+      grep "$pid" || echo; } | tail -1 | awk '{print (NF>0 ? $9 : "0")}'; } &
   pids+=($!)
-  { exec >"$memf"; smem -H -U "$USER" -c 'pid pss' -P "$tool" 2> error.log | {
-      grep "$pid" || echo 0; } | awk '{ sum += $NF } END { print sum }' 2> error.log; } &
+  { exec >"$memf"; smem -H -U "$USER" -c 'pid pss' -P "$tool" | {
+      grep "$pid" || echo 0; } | awk '{ sum += $NF } END { print sum }'; } &
   pids+=($!)
-  { exec >"$sockf"; sudo ss -tp 2> error.log | grep -c "$tool"; } &
+  { exec >"$sockf"; sudo ss -tp | grep -c "$tool"; } &
   pids+=($!)
-  wait "${pids[@]}"
-  bandwidth=$(cat "$bandwidthf" 2> error.log)
-  bandwidth_utilization=$(awk -v bw="$bandwidth" -v max_bw="$max_bandwidth_kbps" 'BEGIN { printf "%.2f", (bw / max_bw) * 100 }' 2> error.log)
-  open_sockets=$(cat "$sockf")
-  echo "${etimes},$(cat "$cpuf"),$(cat "$memf"),${bandwidth},${bandwidth_utilization},${open_sockets}" >> $results_file
+
+
+  wait "${pids[@]}" 2> error.log
+  waitstatus=$?
+  trap 'signal_received="EXIT"; last_command=$BASH_COMMAND; cleanup; exit 0' EXIT
+  if [ $waitstatus -eq 0 ]; then
+    # echo "Metrics collected for process $pid at time $etimes with cpu $(cat "$cpuf"), mem $(cat "$memf"), bandwidth $(cat "$bandwidthf"), sockets $(cat "$sockf")"
+    bandwidth=$(cat "$bandwidthf")
+    bandwidth_utilization=$(awk -v bw="$bandwidth" -v max_bw="$max_bandwidth_kbps" 'BEGIN { printf "%.2f", (bw / max_bw) * 100 }')
+    open_sockets=$(cat "$sockf")
+    echo "${etimes},$(cat "$cpuf"),$(cat "$memf"),${bandwidth},${bandwidth_utilization},${open_sockets}" >> $results_file
+  else
+    echo "Error collecting metrics for process $pid at time $etimes"
+    cat error.log
+    exit 1
+  fi
+  
 done
