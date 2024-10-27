@@ -75,13 +75,106 @@
                 "--no-tui",
                 "--disable-keepalive",
                 "--latency-correction",
-                "-z 120s"
+                "-z 120s",
+                "-q 1000000"
             ],
             "experiment-categories": [
                 "disable-keepalive"
             ],
             "tags": [
                 "oha",
+                "small"
+            ]
+        },
+        {
+            "name": "oha-6",
+            "description": "oha-6 basic oha experiment with keepalive disabled",
+            "parameters": [
+                "--no-tui",
+                "--disable-keepalive",
+                "--latency-correction",
+                "-z 480s",
+                "-q 1000000"
+            ],
+            "experiment-categories": [
+                "disable-keepalive"
+            ],
+            "tags": [
+                "oha",
+                "small"
+            ]
+        }
+    ],
+    "wrk": [
+        {
+            "name": "wrk-1",
+            "description": "wrk-1 basic wrk experiment",
+            "parameters": [
+                "--latency",
+                "-t 1",
+                "-d 60s",
+                "-c 10"
+            ],
+            "experiment-categories": [
+                "time-based-rps-increase",
+                "variable-time"
+            ],
+            "tags": [
+                "wrk",
+                "small"
+            ]
+        },
+        {
+            "name": "wrk-2",
+            "description": "wrk-2 basic wrk experiment",
+            "parameters": [
+                "--latency",
+                "-t 1",
+                "-d 120s",
+                "-c 10"
+            ],
+            "experiment-categories": [
+                "time-based-rps-increase",
+                "variable-time"
+            ],
+            "tags": [
+                "wrk",
+                "small"
+            ]
+        },
+        {
+            "name": "wrk-3",
+            "description": "wrk-3 basic wrk experiment",
+            "parameters": [
+                "--latency",
+                "-t 5",
+                "-d 120s",
+                "-c 10"
+            ],
+            "experiment-categories": [
+                "time-based-rps-increase",
+                "variable-connections"
+            ],
+            "tags": [
+                "wrk",
+                "small"
+            ]
+        },
+        {
+            "name": "wrk-5",
+            "description": "wrk-5 basic wrk experiment",
+            "parameters": [
+                "--latency",
+                "-t 5",
+                "-d 120s",
+                "-c 1000"
+            ],
+            "experiment-categories": [
+                "time-based-rps-increase",
+                "variable-connections"
+            ],
+            "tags": [
+                "wrk",
                 "small"
             ]
         }

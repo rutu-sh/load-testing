@@ -1,0 +1,18 @@
+{
+  "name": "wrk-1",
+  "description": "wrk-1 basic wrk experiment",
+  "parameters": [
+    "--latency",
+    "-t 1",
+    "-d 60s",
+    "-c 10"
+  ],
+  "experiment-categories": [
+    "time-based-rps-increase",
+    "variable-t"
+  ],
+  "tags": [
+    "wrk",
+    "small"
+  ]
+}

@@ -61,9 +61,9 @@ reset-server:
 
 perform-experiment-remote:
 	@echo "Performing experiment ${EXPERIMENT_NAME} for tool ${TOOL}... on ${LOAD_GEN_NODE}"
-	$(MAKE) cl-sync-code NODE=${LOAD_GEN_NODE} && \
-	$(MAKE) cl-run-cmd NODE=${LOAD_GEN_NODE} COMMAND="cd ${REMOTE_DIR}/load-testing && TOOL=${TOOL} EXPERIMENT_NAME=${EXPERIMENT_NAME} make perform-experiment" && \
-	$(MAKE) copy-results && \
+	$(MAKE) cl-sync-code NODE=${LOAD_GEN_NODE} 
+	$(MAKE) cl-run-cmd NODE=${LOAD_GEN_NODE} COMMAND="cd ${REMOTE_DIR}/load-testing && TOOL=${TOOL} EXPERIMENT_NAME=${EXPERIMENT_NAME} make perform-experiment" 
+	$(MAKE) copy-results 
 	$(MAKE) reset-server
 	echo "Experiment done"
 

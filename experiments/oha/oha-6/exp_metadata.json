@@ -1,11 +1,11 @@
 {
-  "name": "oha-5",
-  "description": "oha-5 basic oha experiment with keepalive disabled",
+  "name": "oha-6",
+  "description": "oha-6 basic oha experiment with keepalive disabled",
   "parameters": [
     "--no-tui",
     "--disable-keepalive",
     "--latency-correction",
-    "-z 120s",
+    "-z 480s",
     "-q 1000000"
   ],
   "experiment-categories": [
