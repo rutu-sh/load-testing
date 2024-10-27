@@ -13,7 +13,6 @@ function install_go_wrk {
     {
         source ${HOME}/.profile && \
         sudo apt-get update && \
-        sudo apt-get install -y smem jq && \
         rm -rf /tmp/go-wrk && \
         git clone https://github.com/tsliwowicz/go-wrk.git /tmp/go-wrk && \
         cd /tmp/go-wrk && \
@@ -37,12 +36,11 @@ function install_k6 {
 
 function install_locust {
     sudo apt-get update -y && \
-    sudo apt-get install -y python3-pip python3-locust smm jq && \
+    sudo apt-get install -y python3-pip python3-locust 
 }
 
 
 function install_oha {
-    sudo apt-get update -y && sudo apt-get install -y smem jq iftop ifstat ethtool
     echo "deb [signed-by=/usr/share/keyrings/azlux-archive-keyring.gpg] http://packages.azlux.fr/debian/ stable main" | sudo tee /etc/apt/sources.list.d/azlux.list
     sudo wget -O /usr/share/keyrings/azlux-archive-keyring.gpg https://azlux.fr/repo.gpg
     sudo apt update
@@ -51,17 +49,21 @@ function install_oha {
 
 
 function install_wrk {
-    sudo apt-get update -y && sudo apt-get install -y wrk smem jq
+    sudo apt-get update -y && sudo apt-get install -y wrk 
 }
 
 
 function install_wrk2 {
     sudo apt-get update -y && \
-    sudo apt-get install -y build-essential libssl-dev git zlib1g-dev smem jq && \
+    sudo apt-get install -y build-essential libssl-dev zlib1g-dev && \
     git clone https://github.com/giltene/wrk2.git && \
     cd wrk2 && \
     make && \
     sudo cp wrk /usr/local/bin/wrk2
+}
+
+function setup_loadgen {
+    sudo apt-get update -y && sudo apt-get install -y smem jq iftop ifstat ethtool
 }
 
 

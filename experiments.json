@@ -8,6 +8,93 @@
                 "--latency-correction",
                 "-z 60s",
                 "-q 1000000"
+            ],
+            "experiment-categories": [
+                "time-based-rps-increase"
+            ],
+            "tags": [
+                "oha",
+                "small"
+            ]
+        },
+        {
+            "name": "oha-2",
+            "description": "oha-2 basic oha experiment",
+            "parameters": [
+                "--no-tui",
+                "--latency-correction",
+                "-z 120s",
+                "-q 1000000"
+            ],
+            "experiment-categories": [
+                "time-based-rps-increase"
+            ],
+            "tags": [
+                "oha",
+                "small"
+            ]
+        },
+        {
+            "name": "oha-3",
+            "description": "oha-3 basic oha experiment",
+            "parameters": [
+                "--no-tui",
+                "--latency-correction",
+                "-z 240s",
+                "-q 1000000"
+            ],
+            "experiment-categories": [
+                "time-based-rps-increase"
+            ],
+            "tags": [
+                "oha",
+                "small"
+            ]
+        },
+        {
+            "name": "oha-4",
+            "description": "oha-4 basic oha experiment",
+            "parameters": [
+                "--no-tui",
+                "--latency-correction",
+                "-z 480s",
+                "-q 1000000"
+            ],
+            "experiment-categories": [
+                "time-based-rps-increase"
+            ],
+            "tags": [
+                "oha",
+                "small"
+            ]
+        },
+        {
+            "name": "oha-5",
+            "description": "oha-5 basic oha experiment with keepalive disabled",
+            "parameters": [
+                "--no-tui",
+                "--disable-keepalive",
+                "--latency-correction",
+                "-z 120s"
+            ],
+            "experiment-categories": [
+                "disable-keepalive"
+            ],
+            "tags": [
+                "oha",
+                "small"
+            ]
+        }
+    ],
+    "default": [
+        {
+            "name": "default-1",
+            "description": "default-1 basic experiment",
+            "parameters": [
+                "--no-tui",
+                "--latency-correction",
+                "-z 60s",
+                "-q 1000000"
             ]
         }
     ]

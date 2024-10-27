@@ -1,0 +1,17 @@
+{
+  "name": "oha-4",
+  "description": "oha-4 basic oha experiment",
+  "parameters": [
+    "--no-tui",
+    "--latency-correction",
+    "-z 480s",
+    "-q 1000000"
+  ],
+  "experiment-categories": [
+    "time-based-rps-increase"
+  ],
+  "tags": [
+    "oha",
+    "small"
+  ]
+}

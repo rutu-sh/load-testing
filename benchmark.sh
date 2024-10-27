@@ -29,7 +29,7 @@ sint="${BENCH_SAMPLE_INTERVAL:-5}"
 
 url=${BENCHMARK_URL:-http://localhost:8080}
 url_without_protocol=$(echo "$url" | sed 's/http[s]*:\/\///')
-echo "benchmarking $url"
+echo "benchmarking $url with tool $TOOL"
 device=$(ip route get "$url_without_protocol" | awk '{for (i=1; i<NF; i++) if ($i == "dev") print $(i+1)}')
 
 if [ -z "${TOOL:-}" ]; then
@@ -38,8 +38,7 @@ if [ -z "${TOOL:-}" ]; then
 fi
 tool=${TOOL}
 
-exp_dir="${EXPERIMENT_DIR:-experiments}/$(date +%Y%m%d-%H%M%S)"
-mkdir -p "$exp_dir"
+exp_dir="${EXPERIMENT_DIR}"
 results_file="${exp_dir}/results.csv"
 out_file="${exp_dir}/out.txt"
 
@@ -56,23 +55,29 @@ echo "using device $device with max bandwidth $max_bandwidth_kbps KB/s"
 "$tool" "$@" ${BENCHMARK_URL} >$out_file 2>&1 &
 pid="$!"
 
-echo '"Time (s)","CPU (%)","MEM (KB)","Bandwidth (KB/s)","Bandwidth Utilization (%)","Open Sockets"' >> $results_file
+echo "pid is $pid"
+echo '"Time (s)","CPU (%)","MEM (KB)","Bandwidth (KB/s)","Bandwidth Utilization (%)","Open Sockets"' > $results_file
 while true; do
+  # Check if the process is still running
+  if ! ps -p "$pid" > /dev/null; then
+    echo "Process $pid has terminated. Exiting loop."
+    break
+  fi
   etimes=$(ps -p "$pid" --no-headers -o etimes | awk '{ print $1 }')
   pids=()
-  { exec >"$bandwidthf"; sudo ifstat -i "$device" "$sint" 1 | awk 'NR==3 {print $1 + $2}'; } &
+  { exec >"$bandwidthf"; sudo ifstat -i "$device" "$sint" 1 2> error.log| awk 'NR==3 {print $1 + $2}'; } &
   pids+=($!)
-  { exec >"$cpuf"; top -b -n 2 -d "$sint" -p "$pid" | {
-      grep "$pid" || echo; } | tail -1 | awk '{print (NF>0 ? $9 : "0")}'; } &
+  { exec >"$cpuf"; top -b -n 2 -d "$sint" -p "$pid" 2> error.log | {
+      grep "$pid" 2> error.log || echo; } | tail -1 | awk '{print (NF>0 ? $9 : "0")}' 2> error.log; } &
   pids+=($!)
-  { exec >"$memf"; smem -H -U "$USER" -c 'pid pss' -P '${tool} ' | {
-      grep "$pid" || echo 0; } | awk '{ sum += $NF } END { print sum }'; } &
+  { exec >"$memf"; smem -H -U "$USER" -c 'pid pss' -P "$tool" 2> error.log | {
+      grep "$pid" || echo 0; } | awk '{ sum += $NF } END { print sum }' 2> error.log; } &
   pids+=($!)
-  { exec >"$sockf"; sudo ss -tp | grep -c "$tool"; } &
+  { exec >"$sockf"; sudo ss -tp 2> error.log | grep -c "$tool"; } &
   pids+=($!)
   wait "${pids[@]}"
-  bandwidth=$(cat "$bandwidthf")
-  bandwidth_utilization=$(awk -v bw="$bandwidth" -v max_bw="$max_bandwidth_kbps" 'BEGIN { printf "%.2f", (bw / max_bw) * 100 }')
+  bandwidth=$(cat "$bandwidthf" 2> error.log)
+  bandwidth_utilization=$(awk -v bw="$bandwidth" -v max_bw="$max_bandwidth_kbps" 'BEGIN { printf "%.2f", (bw / max_bw) * 100 }' 2> error.log)
   open_sockets=$(cat "$sockf")
   echo "${etimes},$(cat "$cpuf"),$(cat "$memf"),${bandwidth},${bandwidth_utilization},${open_sockets}" >> $results_file
 done
