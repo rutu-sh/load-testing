@@ -41,6 +41,10 @@ setup-platform:
 	echo "Environment setup done"
 
 
+copy-experiment-results:
+	@echo "Copying experiment results..."
+	$(MAKE) cl-scp-from-host NODE=$(LOAD_GEN_NODE) SCP_SRC=${REMOTE_DIR}/load-testing/experiments/${TOOL}/${EXPERIMENT_NAME} SCP_DEST=${CURDIR}/experiments/${TOOL}
+
 copy-results:
 	@echo "Copying results from the cloudlab host..."
 	$(MAKE) cl-scp-from-host NODE=$(LOAD_GEN_NODE) SCP_SRC=${REMOTE_DIR}/load-testing/experiments SCP_DEST=${CURDIR}
@@ -63,7 +67,7 @@ perform-experiment-remote:
 	@echo "Performing experiment ${EXPERIMENT_NAME} for tool ${TOOL}... on ${LOAD_GEN_NODE}"
 	$(MAKE) cl-sync-code NODE=${LOAD_GEN_NODE} 
 	$(MAKE) cl-run-cmd NODE=${LOAD_GEN_NODE} COMMAND="cd ${REMOTE_DIR}/load-testing && TOOL=${TOOL} EXPERIMENT_NAME=${EXPERIMENT_NAME} make perform-experiment" 
-	$(MAKE) copy-results 
+	$(MAKE) copy-experiment-results
 	$(MAKE) reset-server
 	echo "Experiment done"
 

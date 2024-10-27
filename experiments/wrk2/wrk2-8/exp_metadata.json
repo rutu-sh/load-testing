@@ -1,0 +1,19 @@
+{
+  "name": "wrk2-8",
+  "description": "wrk2-8 basic wrk2 experiment",
+  "parameters": [
+    "--u_latency",
+    "-t 1",
+    "-d 60s",
+    "-c 10",
+    "-R 128000"
+  ],
+  "experiment-categories": [
+    "time-based-rps-increase",
+    "variable-time"
+  ],
+  "tags": [
+    "wrk2",
+    "small"
+  ]
+}

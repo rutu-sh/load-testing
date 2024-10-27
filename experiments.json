@@ -269,6 +269,236 @@
             ]
         }
     ],
+    "wrk2": [
+        {
+            "name": "wrk2-1",
+            "description": "wrk2-1 basic wrk2 experiment",
+            "parameters": [
+                "--u_latency",
+                "-t 1",
+                "-d 60s",
+                "-c 10",
+                "-R 2000"
+            ],
+            "experiment-categories": [
+                "time-based-rps-increase",
+                "variable-time"
+            ],
+            "tags": [
+                "wrk2",
+                "small"
+            ]
+        },
+        {
+            "name": "wrk2-2",
+            "description": "wrk2-2 basic wrk2 experiment",
+            "parameters": [
+                "--u_latency",
+                "-t 1",
+                "-d 60s",
+                "-c 10",
+                "-R 3000"
+            ],
+            "experiment-categories": [
+                "time-based-rps-increase",
+                "variable-time"
+            ],
+            "tags": [
+                "wrk2",
+                "small"
+            ]
+        },
+        {
+            "name": "wrk2-3",
+            "description": "wrk2-3 basic wrk2 experiment",
+            "parameters": [
+                "--u_latency",
+                "-t 1",
+                "-d 60s",
+                "-c 10",
+                "-R 4000"
+            ],
+            "experiment-categories": [
+                "time-based-rps-increase",
+                "variable-time"
+            ],
+            "tags": [
+                "wrk2",
+                "small"
+            ]
+        },
+        {
+            "name": "wrk2-4",
+            "description": "wrk2-4 basic wrk2 experiment",
+            "parameters": [
+                "--u_latency",
+                "-t 1",
+                "-d 60s",
+                "-c 10",
+                "-R 8000"
+            ],
+            "experiment-categories": [
+                "time-based-rps-increase",
+                "variable-time"
+            ],
+            "tags": [
+                "wrk2",
+                "small"
+            ]
+        },
+        {
+            "name": "wrk2-5",
+            "description": "wrk2-5 basic wrk2 experiment",
+            "parameters": [
+                "--u_latency",
+                "-t 1",
+                "-d 60s",
+                "-c 10",
+                "-R 16000"
+            ],
+            "experiment-categories": [
+                "time-based-rps-increase",
+                "variable-time"
+            ],
+            "tags": [
+                "wrk2",
+                "small"
+            ]
+        },
+        {
+            "name": "wrk2-6",
+            "description": "wrk2-6 basic wrk2 experiment",
+            "parameters": [
+                "--u_latency",
+                "-t 1",
+                "-d 60s",
+                "-c 10",
+                "-R 32000"
+            ],
+            "experiment-categories": [
+                "time-based-rps-increase",
+                "variable-time"
+            ],
+            "tags": [
+                "wrk2",
+                "small"
+            ]
+        },
+        {
+            "name": "wrk2-7",
+            "description": "wrk2-7 basic wrk2 experiment",
+            "parameters": [
+                "--u_latency",
+                "-t 1",
+                "-d 60s",
+                "-c 10",
+                "-R 64000"
+            ],
+            "experiment-categories": [
+                "time-based-rps-increase",
+                "variable-time"
+            ],
+            "tags": [
+                "wrk2",
+                "small"
+            ]
+        },
+        {
+            "name": "wrk2-8",
+            "description": "wrk2-8 basic wrk2 experiment",
+            "parameters": [
+                "--u_latency",
+                "-t 1",
+                "-d 60s",
+                "-c 10",
+                "-R 128000"
+            ],
+            "experiment-categories": [
+                "time-based-rps-increase",
+                "variable-time"
+            ],
+            "tags": [
+                "wrk2",
+                "small"
+            ]
+        },
+        {
+            "name": "wrk2-9",
+            "description": "wrk2-9 basic wrk2 experiment",
+            "parameters": [
+                "--u_latency",
+                "-t 1",
+                "-d 60s",
+                "-c 20",
+                "-R 128000"
+            ],
+            "experiment-categories": [
+                "time-based-rps-increase",
+                "variable-time"
+            ],
+            "tags": [
+                "wrk2",
+                "small"
+            ]
+        },
+        {
+            "name": "wrk2-10",
+            "description": "wrk2-10 basic wrk2 experiment",
+            "parameters": [
+                "--u_latency",
+                "-t 1",
+                "-d 120s",
+                "-c 10",
+                "-R 128000"
+            ],
+            "experiment-categories": [
+                "time-based-rps-increase",
+                "variable-time"
+            ],
+            "tags": [
+                "wrk2",
+                "small"
+            ]
+        },
+        {
+            "name": "wrk2-11",
+            "description": "wrk2-11 basic wrk2 experiment",
+            "parameters": [
+                "--u_latency",
+                "-t 2",
+                "-d 60s",
+                "-c 10",
+                "-R 128000"
+            ],
+            "experiment-categories": [
+                "time-based-rps-increase",
+                "variable-time"
+            ],
+            "tags": [
+                "wrk2",
+                "small"
+            ]
+        },
+        {
+            "name": "wrk2-12",
+            "description": "wrk2-12 basic wrk2 experiment",
+            "parameters": [
+                "--u_latency",
+                "-t 2",
+                "-d 60s",
+                "-c 20",
+                "-R 128000"
+            ],
+            "experiment-categories": [
+                "time-based-rps-increase",
+                "variable-time"
+            ],
+            "tags": [
+                "wrk2",
+                "small"
+            ]
+        }
+    ],
     "default": [
         {
             "name": "default-1",
