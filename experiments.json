@@ -177,6 +177,96 @@
                 "wrk",
                 "small"
             ]
+        },
+        {
+            "name": "wrk-6",
+            "description": "wrk-6 basic wrk experiment",
+            "parameters": [
+                "--latency",
+                "-t 10",
+                "-d 480s",
+                "-c 1000"
+            ],
+            "experiment-categories": [
+                "time-based-rps-increase",
+                "variable-connections"
+            ],
+            "tags": [
+                "wrk",
+                "medium"
+            ]
+        },
+        {
+            "name": "wrk-7",
+            "description": "wrk-7 basic wrk experiment",
+            "parameters": [
+                "--latency",
+                "-t 20",
+                "-d 480s",
+                "-c 1000"
+            ],
+            "experiment-categories": [
+                "time-based-rps-increase",
+                "variable-connections"
+            ],
+            "tags": [
+                "wrk",
+                "medium"
+            ]
+        },
+        {
+            "name": "wrk-8",
+            "description": "wrk-8 basic wrk experiment",
+            "parameters": [
+                "--latency",
+                "-t 30",
+                "-d 480s",
+                "-c 1000"
+            ],
+            "experiment-categories": [
+                "time-based-rps-increase",
+                "variable-connections"
+            ],
+            "tags": [
+                "wrk",
+                "medium"
+            ]
+        },
+        {
+            "name": "wrk-9",
+            "description": "wrk-9 basic wrk experiment",
+            "parameters": [
+                "--latency",
+                "-t 30",
+                "-d 600s",
+                "-c 1000"
+            ],
+            "experiment-categories": [
+                "time-based-rps-increase",
+                "variable-connections"
+            ],
+            "tags": [
+                "wrk",
+                "medium"
+            ]
+        },
+        {
+            "name": "wrk-10",
+            "description": "wrk-9 basic wrk experiment",
+            "parameters": [
+                "--latency",
+                "-t 10",
+                "-d 600s",
+                "-c 600"
+            ],
+            "experiment-categories": [
+                "time-based-rps-increase",
+                "variable-connections"
+            ],
+            "tags": [
+                "wrk",
+                "medium"
+            ]
         }
     ],
     "default": [
