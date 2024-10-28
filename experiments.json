@@ -717,7 +717,26 @@
         }
     ],
     "locust": [
-
+        {
+            "name": "locust-1",
+            "description": "locust-1 basic locust experiment",
+            "parameters": [
+                "--headless",
+                "-f configs/locust/default/locustfile.py",
+                "-u 10",
+                "--run-time 30s",
+                "--processes 4"
+            ],
+            "experiment-categories": [
+                "time-based-rps-increase",
+                "variable-connections",
+                "targeting max rps in this configuration"
+            ],
+            "tags": [
+                "locust",
+                "small"
+            ]
+        }
     ],
     "default": [
         {

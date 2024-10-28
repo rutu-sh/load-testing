@@ -5,9 +5,9 @@
 # - iproute2 (for ss command)
 set -eEuo pipefail
 
-# trap 'last_command=$BASH_COMMAND; signal_received="EXIT"; cleanup; exit 0' EXIT
-# trap 'last_command=$BASH_COMMAND; signal_received="INT"; trap - INT; cleanup; kill -INT $$' INT
-# trap 'last_command=$BASH_COMMAND; signal_received="TERM"; trap - TERM; cleanup; kill -TERM $$' TERM
+trap 'last_command=$BASH_COMMAND; signal_received="EXIT"; cleanup; exit 0' EXIT
+trap 'last_command=$BASH_COMMAND; signal_received="INT"; trap - INT; cleanup; kill -INT $$' INT
+trap 'last_command=$BASH_COMMAND; signal_received="TERM"; trap - TERM; cleanup; kill -TERM $$' TERM
 
 # Create temp files to store the output of each collection command.
 cpuf=$(mktemp)
@@ -21,11 +21,17 @@ function cleanup {
   echo "Received signal: $signal_received"
   echo "Last command: $last_command"
   echo "Exit status: $exit_status"
-  rm -f "$cpuf" "$memf" "$bandwidthf" "$sockf" "$error_log"
+  rm -f "$cpuf" "$memf" "$bandwidthf" "$sockf" 
 }
 
 rm -f results.csv
 touch results.csv
+
+echo "cpu file: $cpuf"
+echo "mem file: $memf"
+echo "bandwidth file: $bandwidthf"
+echo "sock file: $sockf"
+echo "error log: $error_log"
 
 # 5s is the default interval between samples.
 # Note that this might be greater if either smem or the k6 API takes more time
@@ -66,15 +72,28 @@ echo "using device $device with max bandwidth $max_bandwidth_kbps KB/s"
 # Run the collection processes in parallel to avoid blocking.
 # For details see https://stackoverflow.com/a/68316571
 
-
-"$tool" "$@" $url >$out_file 2>&1 &
-pid="$!"
+all_subprocess_pids=()
+if [ "$tool" == "locust" ]; then
+  nohup "$tool" "$@" --host="$url" >$out_file 2>&1 &
+  pid="$!"
+  all_subprocess_pids=$(pgrep -f "$tool ")
+else
+  "$tool" "$@" $url >$out_file 2>&1 &
+  pid="$!"
+fi
 
 echo "pid is $pid"
 echo '"Time (s)","CPU (%)","MEM (KB)","Bandwidth (KB/s)","Bandwidth Utilization (%)","Open Sockets"' > $results_file
 while true; do
   # Check if the process is still running
-  if ! ps -p "$pid" > /dev/null; then
+  if [ "$tool" == "locust" ]; then
+    all_locust_pids=$(pgrep -f "$tool ")
+    if [ -z "$all_locust_pids" ]; then
+      echo "Error: Locust process has terminated. Exiting loop."
+      cleanup
+      exit 1
+    fi
+  elif ! ps -p "$pid" > /dev/null; then
     echo "Process $pid has terminated. Exiting loop."
     cleanup
     exit 0
@@ -91,12 +110,37 @@ while true; do
   pids=()
   { exec >"$bandwidthf" 2>>"$error_log"; sudo ifstat -i "$device" "$sint" 1 | awk 'NR==3 {print $1 + $2}'; } &
   pids+=($!)
-  { exec >"$cpuf" 2>>"$error_log"; top -b -n 2 -d "$sint" -p "$pid" | {
-      grep "$pid" || echo; } | tail -1 | awk '{print (NF>0 ? $9 : "0")}'; } &
-  pids+=($!)
-  { exec >"$memf" 2>>"$error_log"; sudo smem -H -U "$USER" -c 'pid pss' -P "$tool" | {
-      grep "$pid" || echo 0; } | awk '{ sum += $NF } END { print sum }'; } &
-  pids+=($!)
+
+  if [ "$tool" == "locust" ]; then
+    all_locust_pids=$(pgrep -f "$tool ")
+    all_lpid_str=$(echo $all_locust_pids | xargs | sed 's/[^ ]\+/-p &/g')
+    n_pids=$(echo $all_locust_pids | wc -w)
+    echo "all locust pids: $all_locust_pids"
+
+    {
+      exec >"$cpuf" 2>>"$error_log";
+      top -b -n 2 -d "$sint" -p $(pgrep -d ',' -f "locust") | {
+        grep -E "$all_locust_pids" || echo; } | tail -n $n_pids | awk '/PID USER/{last_line_found=1; next} last_line_found' | awk '{ sum += $9 } END { print sum }';
+    } & 
+    pids+=($!)
+
+    {
+      exec >"$memf" 2>>"$error_log";
+      sudo smem -H -U "$USER" -c 'pid pss' -P "$tool" | {
+        grep -E "$all_locust_pids" || echo 0; } | awk '{ sum += $NF } END { print sum }';
+    } & 
+    pids+=($!)
+  else 
+    { 
+      exec >"$cpuf" 2>>"$error_log"; top -b -n 2 -d "$sint" -p "$pid" | {
+        grep "$pid" || echo; } | tail -1 | awk '{print (NF>0 ? $9 : "0")}'; 
+    } &
+    pids+=($!)
+    { exec >"$memf" 2>>"$error_log"; sudo smem -H -U "$USER" -c 'pid pss' -P "$tool" | {
+        grep "$pid" || echo 0; } | awk '{ sum += $NF } END { print sum }'; } &
+    pids+=($!)
+  fi
+ 
   { exec >"$sockf" 2>>"$error_log"; sudo ss -tp | grep -c "$tool"; } &
   pids+=($!)
 
@@ -105,16 +149,15 @@ while true; do
   trap - TERM
   wait "${pids[@]}" 
   waitstatus=$?
-  trap 'last_command=$BASH_COMMAND; signal_received="EXIT"; cleanup; exit 0' EXIT
-  trap 'last_command=$BASH_COMMAND; signal_received="INT"; trap - INT; cleanup; kill -INT $$' INT
-  trap 'last_command=$BASH_COMMAND; signal_received="TERM"; trap - TERM; cleanup; kill -TERM $$' TERM
-  
   if [ $waitstatus -ne 0 ]; then
     echo "Error: One or more background processes failed with exit status $waitstatus"
     cat "$error_log"
     exit 1
   fi
-
+  trap 'last_command=$BASH_COMMAND; signal_received="EXIT"; cleanup; exit 0' EXIT
+  trap 'last_command=$BASH_COMMAND; signal_received="INT"; trap - INT; cleanup; kill -INT $$' INT
+  trap 'last_command=$BASH_COMMAND; signal_received="TERM"; trap - TERM; cleanup; kill -TERM $$' TERM
+  
   bandwidth=$(cat "$bandwidthf")
   bandwidth_utilization=$(awk -v bw="$bandwidth" -v max_bw="$max_bandwidth_kbps" 'BEGIN { printf "%.2f", (bw / max_bw) * 100 }')
   open_sockets=$(cat "$sockf")
