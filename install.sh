@@ -62,6 +62,10 @@ function install_wrk2 {
     sudo cp wrk /usr/local/bin/wrk2
 }
 
+function install_ab {
+    sudo apt-get update -y && sudo apt-get install -y apache2-utils
+}
+
 function setup_loadgen {
     sudo apt-get update -y && sudo apt-get install -y smem jq iftop ifstat ethtool
 }

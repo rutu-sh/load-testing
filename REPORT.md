@@ -76,4 +76,8 @@ Through our experiments we have observed the following configurations affect the
 
 5. Multi-threading/Multi-processing: Whether the tool uses multiple threads or processes to send requests to the server. 
 
+### Tools Overview
 
+#### Wrk
+
+Wrk is a benchmarking tool written in C that is designed for testing HTTP servers. It is known for its high performance and low resource usage. Wrk supports multi-threading and can generate a high number of connections per second. It provides detailed latency and throughput statistics. 

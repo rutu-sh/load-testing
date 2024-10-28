@@ -1,0 +1,21 @@
+{
+  "name": "ab-3",
+  "description": "ab-3 basic ab experiment",
+  "parameters": [
+    "-c 60",
+    "-t 120",
+    "-r",
+    "-n 900000",
+    "-e experiments/ab/ab-3/data.csv"
+  ],
+  "experiment-categories": [
+    "time-based-rps-increase",
+    "variable-connections",
+    "targeting max rps in this configuration",
+    "without keepalive"
+  ],
+  "tags": [
+    "ab",
+    "small"
+  ]
+}
