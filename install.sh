@@ -36,7 +36,8 @@ function install_k6 {
 
 function install_locust {
     sudo apt-get update -y && \
-    sudo apt-get install -y python3-pip python3-locust 
+    sudo apt-get install -y python3-pip && \
+    pip3 install locust==2.32.1 
 }
 
 

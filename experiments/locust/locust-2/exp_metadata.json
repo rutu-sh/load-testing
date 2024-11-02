@@ -1,0 +1,23 @@
+{
+  "name": "locust-2",
+  "description": "locust-2 basic locust experiment",
+  "parameters": [
+    "--headless",
+    "-f configs/locust/default/locustfile.py",
+    "-u 800",
+    "--processes 4",
+    "--run-time 90s",
+    "--csv experiments/locust/locust-2/data",
+    "--csv-full-history",
+    "--only-summary"
+  ],
+  "experiment-categories": [
+    "time-based-rps-increase",
+    "variable-connections",
+    "targeting max rps in this configuration"
+  ],
+  "tags": [
+    "locust",
+    "small"
+  ]
+}

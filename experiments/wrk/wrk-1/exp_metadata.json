@@ -9,7 +9,7 @@
   ],
   "experiment-categories": [
     "time-based-rps-increase",
-    "variable-t"
+    "variable-time"
   ],
   "tags": [
     "wrk",

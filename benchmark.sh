@@ -8,6 +8,7 @@ set -eEuo pipefail
 trap 'last_command=$BASH_COMMAND; signal_received="EXIT"; cleanup; exit 0' EXIT
 trap 'last_command=$BASH_COMMAND; signal_received="INT"; trap - INT; cleanup; kill -INT $$' INT
 trap 'last_command=$BASH_COMMAND; signal_received="TERM"; trap - TERM; cleanup; kill -TERM $$' TERM
+trap 'last_command=$BASH_COMMAND; signal_received="ERR"; cleanup; exit 1' ERR
 
 # Create temp files to store the output of each collection command.
 cpuf=$(mktemp)
@@ -21,11 +22,16 @@ function cleanup {
   echo "Received signal: $signal_received"
   echo "Last command: $last_command"
   echo "Exit status: $exit_status"
-  rm -f "$cpuf" "$memf" "$bandwidthf" "$sockf" 
+
+
+  # rm -f "$cpuf" "$memf" "$bandwidthf" "$sockf" "$error_log"
 }
 
 rm -f results.csv
 touch results.csv
+
+# Redirect all stdout to both the console and the error_log file
+exec > >(tee -a "$error_log") 2>&1
 
 echo "cpu file: $cpuf"
 echo "mem file: $memf"
@@ -39,7 +45,6 @@ echo "error log: $error_log"
 sint="${BENCH_SAMPLE_INTERVAL:-5}"
 
 url=${BENCHMARK_URL:-http://localhost:8080}
-# url_without_protocol=$(echo "$url" | sed 's/http[s]*:\/\///' | )
 url_without_protocol=$(echo "$url" | sed 's|http[s]*://||; s|/$||')
 echo "benchmarking $url endpoint ($url_without_protocol) with tool $TOOL"
 echo "benchmark url: ${BENCHMARK_URL}<"
@@ -67,7 +72,6 @@ fi
 max_bandwidth_kbps=$((max_bandwidth_mbps * 1024 / 8))
 
 echo "using device $device with max bandwidth $max_bandwidth_kbps KB/s"
-# echo "command is $tool $@ $url >$out_file 2>&1 &"
 
 # Run the collection processes in parallel to avoid blocking.
 # For details see https://stackoverflow.com/a/68316571
@@ -119,8 +123,7 @@ while true; do
 
     {
       exec >"$cpuf" 2>>"$error_log";
-      top -b -n 2 -d "$sint" -p $(pgrep -d ',' -f "locust") | {
-        grep -E "$all_locust_pids" || echo; } | tail -n $n_pids | awk '/PID USER/{last_line_found=1; next} last_line_found' | awk '{ sum += $9 } END { print sum }';
+      top -b -n 2 -d "$sint" -p $(pgrep -d ',' -f "locust") | awk '/PID USER/{last_line_found=1; next} last_line_found && /locust/ { sum += $9 } END { print sum }';
     } & 
     pids+=($!)
 
@@ -130,33 +133,40 @@ while true; do
         grep -E "$all_locust_pids" || echo 0; } | awk '{ sum += $NF } END { print sum }';
     } & 
     pids+=($!)
+
   else 
     { 
       exec >"$cpuf" 2>>"$error_log"; top -b -n 2 -d "$sint" -p "$pid" | {
         grep "$pid" || echo; } | tail -1 | awk '{print (NF>0 ? $9 : "0")}'; 
     } &
     pids+=($!)
+
     { exec >"$memf" 2>>"$error_log"; sudo smem -H -U "$USER" -c 'pid pss' -P "$tool" | {
         grep "$pid" || echo 0; } | awk '{ sum += $NF } END { print sum }'; } &
     pids+=($!)
+
   fi
- 
-  { exec >"$sockf" 2>>"$error_log"; sudo ss -tp | grep -c "$tool"; } &
+
+  { exec >"$sockf" 2>>"$error_log"; sudo ss -tp | grep -c "$tool" || true; } &
   pids+=($!)
 
   trap - EXIT
   trap - INT
   trap - TERM
-  wait "${pids[@]}" 
+  trap - ERR
+  wait "${pids[@]}" && echo "All background processes completed successfully"
   waitstatus=$?
   if [ $waitstatus -ne 0 ]; then
     echo "Error: One or more background processes failed with exit status $waitstatus"
     cat "$error_log"
+
+    cleanup
     exit 1
   fi
   trap 'last_command=$BASH_COMMAND; signal_received="EXIT"; cleanup; exit 0' EXIT
   trap 'last_command=$BASH_COMMAND; signal_received="INT"; trap - INT; cleanup; kill -INT $$' INT
   trap 'last_command=$BASH_COMMAND; signal_received="TERM"; trap - TERM; cleanup; kill -TERM $$' TERM
+  trap 'last_command=$BASH_COMMAND; signal_received="ERR"; cleanup; exit 1' ERR
   
   bandwidth=$(cat "$bandwidthf")
   bandwidth_utilization=$(awk -v bw="$bandwidth" -v max_bw="$max_bandwidth_kbps" 'BEGIN { printf "%.2f", (bw / max_bw) * 100 }')
