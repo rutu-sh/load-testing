@@ -1,11 +1,12 @@
 {
-  "name": "locust-1",
-  "description": "locust-1 basic locust experiment",
+  "name": "locust-9",
+  "description": "locust-9 basic locust experiment",
   "parameters": [
     "--headless",
     "-f configs/locust/default/locustfile.py",
-    "-u 200",
-    "-r 200",
+    "-u 400",
+    "-r 400",
+    "--processes 3",
     "--run-time 120s",
     "--only-summary"
   ],

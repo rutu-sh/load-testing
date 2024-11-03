@@ -1,0 +1,43 @@
+[2024-11-03 00:39:58,494] load-gen/INFO/locust.main: Starting Locust 2.32.1
+[2024-11-03 00:39:58,516] load-gen/INFO/root: Waiting for workers to be ready, 0 of 3 connected
+[2024-11-03 00:39:58,519] load-gen/INFO/locust.runners: load-gen.rutu-load-test.gwcloudlab-pg0.wisc.cloudlab.us_0bcd9afe344c4ba5bc2fcea8d9277bd0 (index 0) reported as ready. 1 workers connected.
+[2024-11-03 00:39:58,519] load-gen/INFO/locust.runners: load-gen.rutu-load-test.gwcloudlab-pg0.wisc.cloudlab.us_0497be146c62461892276df67c049aa8 (index 1) reported as ready. 2 workers connected.
+[2024-11-03 00:39:58,520] load-gen/INFO/locust.runners: load-gen.rutu-load-test.gwcloudlab-pg0.wisc.cloudlab.us_b84ee0069b9149a3b45a781fdf2392dd (index 2) reported as ready. 3 workers connected.
+[2024-11-03 00:39:59,518] load-gen/INFO/locust.main: Run time limit set to 120 seconds
+[2024-11-03 00:39:59,519] load-gen/INFO/locust.runners: Sending spawn jobs of 400 users at 400.00 spawn rate to 3 ready workers
+[2024-11-03 00:39:59,519] load-gen/WARNING/locust.runners: Your selected spawn rate is very high (>100/worker), and this is known to sometimes cause issues. Do you really need to ramp up that fast?
+[2024-11-03 00:39:59,643] load-gen/INFO/locust.runners: All users spawned: {"MyUser": 400} (400 total users)
+[2024-11-03 00:40:08,524] load-gen/WARNING/root: CPU usage above 90%! This may constrain your throughput and may even give inconsistent response time measurements! See https://docs.locust.io/en/stable/running-distributed.html for how to distribute the load over multiple CPU cores or machines
+[2024-11-03 00:40:08,533] load-gen/WARNING/root: CPU usage above 90%! This may constrain your throughput and may even give inconsistent response time measurements! See https://docs.locust.io/en/stable/running-distributed.html for how to distribute the load over multiple CPU cores or machines
+[2024-11-03 00:40:08,533] load-gen/WARNING/root: CPU usage above 90%! This may constrain your throughput and may even give inconsistent response time measurements! See https://docs.locust.io/en/stable/running-distributed.html for how to distribute the load over multiple CPU cores or machines
+[2024-11-03 00:40:08,570] load-gen/WARNING/locust.runners: Worker load-gen.rutu-load-test.gwcloudlab-pg0.wisc.cloudlab.us_0bcd9afe344c4ba5bc2fcea8d9277bd0 (index 0) exceeded cpu threshold (will only log this once per worker)
+[2024-11-03 00:40:08,704] load-gen/WARNING/locust.runners: Worker load-gen.rutu-load-test.gwcloudlab-pg0.wisc.cloudlab.us_b84ee0069b9149a3b45a781fdf2392dd (index 2) exceeded cpu threshold (will only log this once per worker)
+[2024-11-03 00:40:08,719] load-gen/WARNING/locust.runners: Worker load-gen.rutu-load-test.gwcloudlab-pg0.wisc.cloudlab.us_0497be146c62461892276df67c049aa8 (index 1) exceeded cpu threshold (will only log this once per worker)
+[2024-11-03 00:41:59,519] load-gen/INFO/locust.main: --run-time limit reached, shutting down
+[2024-11-03 00:41:59,541] load-gen/INFO/locust.runners: Got quit message from master, shutting down...
+[2024-11-03 00:41:59,546] load-gen/INFO/locust.runners: Got quit message from master, shutting down...
+[2024-11-03 00:41:59,559] load-gen/INFO/locust.runners: Got quit message from master, shutting down...
+[2024-11-03 00:41:59,603] load-gen/WARNING/locust.runners: CPU usage was too high at some point during the test! See https://docs.locust.io/en/stable/running-distributed.html for how to distribute the load over multiple CPU cores or machines
+[2024-11-03 00:41:59,603] load-gen/INFO/locust.main: Shutting down (exit code 0)
+[2024-11-03 00:41:59,604] load-gen/INFO/locust.runners: Worker 'load-gen.rutu-load-test.gwcloudlab-pg0.wisc.cloudlab.us_0497be146c62461892276df67c049aa8' (index 1) quit. 0 workers ready.
+[2024-11-03 00:41:59,607] load-gen/WARNING/locust.runners: CPU usage was too high at some point during the test! See https://docs.locust.io/en/stable/running-distributed.html for how to distribute the load over multiple CPU cores or machines
+[2024-11-03 00:41:59,608] load-gen/INFO/locust.main: Shutting down (exit code 0)
+[2024-11-03 00:41:59,608] load-gen/INFO/locust.runners: Worker 'load-gen.rutu-load-test.gwcloudlab-pg0.wisc.cloudlab.us_0bcd9afe344c4ba5bc2fcea8d9277bd0' (index 0) quit. 0 workers ready.
+[2024-11-03 00:41:59,625] load-gen/WARNING/locust.runners: CPU usage was too high at some point during the test! See https://docs.locust.io/en/stable/running-distributed.html for how to distribute the load over multiple CPU cores or machines
+[2024-11-03 00:41:59,626] load-gen/INFO/locust.main: Shutting down (exit code 0)
+[2024-11-03 00:41:59,626] load-gen/INFO/locust.runners: Worker 'load-gen.rutu-load-test.gwcloudlab-pg0.wisc.cloudlab.us_b84ee0069b9149a3b45a781fdf2392dd' (index 2) quit. 0 workers ready.
+[2024-11-03 00:41:59,626] load-gen/INFO/locust.runners: The last worker quit, stopping test.
+[2024-11-03 00:42:00,522] load-gen/INFO/locust.main: Shutting down (exit code 0)
+Type     Name                                                                          # reqs      # fails |    Avg     Min     Max    Med |   req/s  failures/s
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+GET      /                                                                            1459185     0(0.00%) |      7       0     270      7 | 12149.39        0.00
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+         Aggregated                                                                   1459185     0(0.00%) |      7       0     270      7 | 12149.39        0.00
+
+Response time percentiles (approximated)
+Type     Name                                                                                  50%    66%    75%    80%    90%    95%    98%    99%  99.9% 99.99%   100% # reqs
+--------|--------------------------------------------------------------------------------|--------|------|------|------|------|------|------|------|------|------|------|------
+GET      /                                                                                       7      9     10     10     11     17     18     41     50    140    270 1459185
+--------|--------------------------------------------------------------------------------|--------|------|------|------|------|------|------|------|------|------|------|------
+         Aggregated                                                                              7      9     10     10     11     17     18     41     50    140    270 1459185
+

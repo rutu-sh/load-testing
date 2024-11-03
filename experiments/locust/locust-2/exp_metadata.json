@@ -4,11 +4,9 @@
   "parameters": [
     "--headless",
     "-f configs/locust/default/locustfile.py",
-    "-u 800",
-    "--processes 4",
-    "--run-time 90s",
-    "--csv experiments/locust/locust-2/data",
-    "--csv-full-history",
+    "-u 400",
+    "-r 400",
+    "--run-time 120s",
     "--only-summary"
   ],
   "experiment-categories": [

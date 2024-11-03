@@ -1,0 +1,7 @@
+tool,exp_name,duration,connections,qps,disable_keepalive,results_path,out_path,rps,avg_cpu,avg_memory,avg_bandwidth,avg_bandwidth_utilization,avg_open_sockets
+oha,oha-4,480,,1000000,False,experiments/oha/oha-4/results.csv,experiments/oha/oha-4/out.txt,175808.524,1135.7247311827957,7831355.655913979,155090.13268817205,12.11677419354839,43.89247311827957
+oha,oha-3,240,,1000000,False,experiments/oha/oha-3/results.csv,experiments/oha/oha-3/out.txt,172160.6277,1150.9847826086957,3795004.9565217393,153254.0,11.973043478260871,44.82608695652174
+oha,oha-2,120,,1000000,False,experiments/oha/oha-2/results.csv,experiments/oha/oha-2/out.txt,183634.582,1119.3,2019393.8333333333,157456.67875,12.300416666666669,43.875
+oha,oha-5,120,,1000000,True,experiments/oha/oha-5/results.csv,experiments/oha/oha-5/out.txt,10298.1215,3894.217391304348,963064.3478260869,11367.91304347826,0.8891304347826086,6.695652173913044
+oha,oha-6,480,,1000000,True,experiments/oha/oha-6/results.csv,experiments/oha/oha-6/out.txt,,3846.470588235294,726881.8823529412,12916.805882352943,1.0094117647058825,5.705882352941177
+oha,oha-1,60,,1000000,False,experiments/oha/oha-1/results.csv,experiments/oha/oha-1/out.txt,174445.1054,1136.25,952788.0,149359.83333333334,11.668333333333331,46.083333333333336

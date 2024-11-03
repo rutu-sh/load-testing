@@ -723,11 +723,9 @@
             "parameters": [
                 "--headless",
                 "-f configs/locust/default/locustfile.py",
-                "-u 10",
-                "--processes 2",
-                "--run-time 30s",
-                "--csv experiments/locust/locust-1/data",
-                "--csv-full-history",
+                "-u 200",
+                "-r 200",
+                "--run-time 120s",
                 "--only-summary"
             ],
             "experiment-categories": [
@@ -746,11 +744,359 @@
             "parameters": [
                 "--headless",
                 "-f configs/locust/default/locustfile.py",
-                "-u 800",
+                "-u 400",
+                "-r 400",
+                "--run-time 120s",
+                "--only-summary"
+            ],
+            "experiment-categories": [
+                "time-based-rps-increase",
+                "variable-connections",
+                "targeting max rps in this configuration"
+            ],
+            "tags": [
+                "locust",
+                "small"
+            ]
+        },
+        {
+            "name": "locust-3",
+            "description": "locust-3 basic locust experiment",
+            "parameters": [
+                "--headless",
+                "-f configs/locust/default/locustfile.py",
+                "-u 500",
+                "-r 500",
+                "--run-time 120s",
+                "--only-summary"
+            ],
+            "experiment-categories": [
+                "time-based-rps-increase",
+                "variable-connections",
+                "targeting max rps in this configuration"
+            ],
+            "tags": [
+                "locust",
+                "small"
+            ]
+        },
+        {
+            "name": "locust-4",
+            "description": "locust-4 basic locust experiment",
+            "parameters": [
+                "--headless",
+                "-f configs/locust/default/locustfile.py",
+                "-u 600",
+                "-r 600",
+                "--run-time 120s",
+                "--only-summary"
+            ],
+            "experiment-categories": [
+                "time-based-rps-increase",
+                "variable-connections",
+                "targeting max rps in this configuration"
+            ],
+            "tags": [
+                "locust",
+                "small"
+            ]
+        },
+        {
+            "name": "locust-5",
+            "description": "locust-5 basic locust experiment",
+            "parameters": [
+                "--headless",
+                "-f configs/locust/default/locustfile.py",
+                "-u 200",
+                "-r 200",
+                "--processes 2",
+                "--run-time 120s",
+                "--only-summary"
+            ],
+            "experiment-categories": [
+                "time-based-rps-increase",
+                "variable-connections",
+                "targeting max rps in this configuration"
+            ],
+            "tags": [
+                "locust",
+                "small"
+            ]
+        },
+        {
+            "name": "locust-6",
+            "description": "locust-6 basic locust experiment",
+            "parameters": [
+                "--headless",
+                "-f configs/locust/default/locustfile.py",
+                "-u 400",
+                "-r 400",
+                "--processes 2",
+                "--run-time 120s",
+                "--only-summary"
+            ],
+            "experiment-categories": [
+                "time-based-rps-increase",
+                "variable-connections",
+                "targeting max rps in this configuration"
+            ],
+            "tags": [
+                "locust",
+                "small"
+            ]
+        },
+        {
+            "name": "locust-7",
+            "description": "locust-7 basic locust experiment",
+            "parameters": [
+                "--headless",
+                "-f configs/locust/default/locustfile.py",
+                "-u 600",
+                "-r 600",
+                "--processes 2",
+                "--run-time 120s",
+                "--only-summary"
+            ],
+            "experiment-categories": [
+                "time-based-rps-increase",
+                "variable-connections",
+                "targeting max rps in this configuration"
+            ],
+            "tags": [
+                "locust",
+                "small"
+            ]
+        },
+        {
+            "name": "locust-8",
+            "description": "locust-8 basic locust experiment",
+            "parameters": [
+                "--headless",
+                "-f configs/locust/default/locustfile.py",
+                "-u 200",
+                "-r 200",
+                "--processes 3",
+                "--run-time 120s",
+                "--only-summary"
+            ],
+            "experiment-categories": [
+                "time-based-rps-increase",
+                "variable-connections",
+                "targeting max rps in this configuration"
+            ],
+            "tags": [
+                "locust",
+                "small"
+            ]
+        },
+        {
+            "name": "locust-9",
+            "description": "locust-9 basic locust experiment",
+            "parameters": [
+                "--headless",
+                "-f configs/locust/default/locustfile.py",
+                "-u 400",
+                "-r 400",
+                "--processes 3",
+                "--run-time 120s",
+                "--only-summary"
+            ],
+            "experiment-categories": [
+                "time-based-rps-increase",
+                "variable-connections",
+                "targeting max rps in this configuration"
+            ],
+            "tags": [
+                "locust",
+                "small"
+            ]
+        },
+        {
+            "name": "locust-10",
+            "description": "locust-10 basic locust experiment",
+            "parameters": [
+                "--headless",
+                "-f configs/locust/default/locustfile.py",
+                "-u 600",
+                "-r 600",
+                "--processes 3",
+                "--run-time 120s",
+                "--only-summary"
+            ],
+            "experiment-categories": [
+                "time-based-rps-increase",
+                "variable-connections",
+                "targeting max rps in this configuration"
+            ],
+            "tags": [
+                "locust",
+                "small"
+            ]
+        },
+        {
+            "name": "locust-11",
+            "description": "locust-11 basic locust experiment",
+            "parameters": [
+                "--headless",
+                "-f configs/locust/default/locustfile.py",
+                "-u 200",
+                "-r 200",
                 "--processes 4",
-                "--run-time 90s",
-                "--csv experiments/locust/locust-2/data",
-                "--csv-full-history",
+                "--run-time 120s",
+                "--only-summary"
+            ],
+            "experiment-categories": [
+                "time-based-rps-increase",
+                "variable-connections",
+                "targeting max rps in this configuration"
+            ],
+            "tags": [
+                "locust",
+                "small"
+            ]
+        },
+        {
+            "name": "locust-12",
+            "description": "locust-12 basic locust experiment",
+            "parameters": [
+                "--headless",
+                "-f configs/locust/default/locustfile.py",
+                "-u 400",
+                "-r 400",
+                "--processes 4",
+                "--run-time 120s",
+                "--only-summary"
+            ],
+            "experiment-categories": [
+                "time-based-rps-increase",
+                "variable-connections",
+                "targeting max rps in this configuration"
+            ],
+            "tags": [
+                "locust",
+                "small"
+            ]
+        },
+        {
+            "name": "locust-13",
+            "description": "locust-13 basic locust experiment",
+            "parameters": [
+                "--headless",
+                "-f configs/locust/default/locustfile.py",
+                "-u 600",
+                "-r 600",
+                "--processes 4",
+                "--run-time 120s",
+                "--only-summary"
+            ],
+            "experiment-categories": [
+                "time-based-rps-increase",
+                "variable-connections",
+                "targeting max rps in this configuration"
+            ],
+            "tags": [
+                "locust",
+                "small"
+            ]
+        },
+        {
+            "name": "locust-14",
+            "description": "locust-14 basic locust experiment",
+            "parameters": [
+                "--headless",
+                "-f configs/locust/default/locustfile.py",
+                "-u 200",
+                "-r 200",
+                "--processes 5",
+                "--run-time 120s",
+                "--only-summary"
+            ],
+            "experiment-categories": [
+                "time-based-rps-increase",
+                "variable-connections",
+                "targeting max rps in this configuration"
+            ],
+            "tags": [
+                "locust",
+                "small"
+            ]
+        },
+        {
+            "name": "locust-15",
+            "description": "locust-15 basic locust experiment",
+            "parameters": [
+                "--headless",
+                "-f configs/locust/default/locustfile.py",
+                "-u 400",
+                "-r 400",
+                "--processes 5",
+                "--run-time 120s",
+                "--only-summary"
+            ],
+            "experiment-categories": [
+                "time-based-rps-increase",
+                "variable-connections",
+                "targeting max rps in this configuration"
+            ],
+            "tags": [
+                "locust",
+                "small"
+            ]
+        },
+        {
+            "name": "locust-16",
+            "description": "locust-16 basic locust experiment",
+            "parameters": [
+                "--headless",
+                "-f configs/locust/default/locustfile.py",
+                "-u 600",
+                "-r 600",
+                "--processes 5",
+                "--run-time 120s",
+                "--only-summary"
+            ],
+            "experiment-categories": [
+                "time-based-rps-increase",
+                "variable-connections",
+                "targeting max rps in this configuration"
+            ],
+            "tags": [
+                "locust",
+                "small"
+            ]
+        },
+        {
+            "name": "locust-17",
+            "description": "locust-17 basic locust experiment",
+            "parameters": [
+                "--headless",
+                "-f configs/locust/default/locustfile.py",
+                "-u 200",
+                "-r 200",
+                "--processes 6",
+                "--run-time 120s",
+                "--only-summary"
+            ],
+            "experiment-categories": [
+                "time-based-rps-increase",
+                "variable-connections",
+                "targeting max rps in this configuration"
+            ],
+            "tags": [
+                "locust",
+                "small"
+            ]
+        },
+        {
+            "name": "locust-18",
+            "description": "locust-18 basic locust experiment",
+            "parameters": [
+                "--headless",
+                "-f configs/locust/default/locustfile.py",
+                "-u 800",
+                "-r 800",
+                "--processes 8",
+                "--run-time 120s",
                 "--only-summary"
             ],
             "experiment-categories": [
