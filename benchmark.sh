@@ -123,8 +123,26 @@ while true; do
 
     {
       exec >"$cpuf" 2>>"$error_log";
-      top -b -n 2 -d "$sint" -p $(pgrep -d ',' -f "locust") | awk '/PID USER/{last_line_found=1; next} last_line_found && /locust/ { sum += $9 } END { print sum }';
-    } & 
+      all_locust_pids=$(pgrep -f "locust")
+      pid_array=($all_locust_pids)
+      chunk_size=5
+      total_sum=0
+      # echo "new iteration" >> ./chunk.txt
+      for((i=0; i< $n_pids; i+=chunk_size)); do
+        chunk=${pid_array[@]:i:chunk_size}
+        # echo $chunk >> ./chunk.txt
+        chunk_sum=$(sudo top -b -n 2 -d "$sint" -p $(echo $chunk | tr ' ' ',') | awk '/PID USER/{last_line_found=1; next} last_line_found && /locust/ { sum += $9 } END { print sum }';)
+        if [ -z "$chunk_sum" ]; then
+          chunk_sum=0
+        fi
+        # echo "$total_sum + $chunk_sum" >> ./chunk.txt
+        total_sum=$(echo "$total_sum + $chunk_sum" | bc)
+      done
+      if [ -z "$total_sum" ]; then
+        total_sum=0
+      fi
+      echo $total_sum
+    } &
     pids+=($!)
 
     {

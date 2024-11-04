@@ -116,7 +116,12 @@ def process_wrk_data(exp_dir: str) -> pd.DataFrame:
             print(f"Could not find parameters in {exp_metadata_path}")
             continue
 
-    return pd.DataFrame(data)
+    df = pd.DataFrame(data)
+    # sort df by experiment_number which is the last part of the exp_name
+    df['experiment_number'] = df['exp_name'].apply(lambda x: int(x.split('-')[-1]))
+    df.sort_values('experiment_number', inplace=True)
+    df.drop('experiment_number', axis=1, inplace=True)
+    return df
 
 
 def process_wrk2_data(exp_dir: str) -> pd.DataFrame:
@@ -172,7 +177,12 @@ def process_wrk2_data(exp_dir: str) -> pd.DataFrame:
             print(f"Could not find parameters in {exp_metadata_path}")
             continue
 
-    return pd.DataFrame(data)
+    df = pd.DataFrame(data)
+    # sort df by experiment_number which is the last part of the exp_name
+    df['experiment_number'] = df['exp_name'].apply(lambda x: int(x.split('-')[-1]))
+    df.sort_values('experiment_number', inplace=True)
+    df.drop('experiment_number', axis=1, inplace=True)
+    return df
 
 
 def process_oha_data(exp_dir: str) -> pd.DataFrame:
@@ -228,7 +238,12 @@ def process_oha_data(exp_dir: str) -> pd.DataFrame:
             print(f"Could not find parameters in {exp_metadata_path}")
             continue
 
-    return pd.DataFrame(data)
+    df = pd.DataFrame(data)
+    # sort df by experiment_number which is the last part of the exp_name
+    df['experiment_number'] = df['exp_name'].apply(lambda x: int(x.split('-')[-1]))
+    df.sort_values('experiment_number', inplace=True)
+    df.drop('experiment_number', axis=1, inplace=True)
+    return df
 
 
 def process_ab_data(exp_dir: str) -> pd.DataFrame:
@@ -284,7 +299,12 @@ def process_ab_data(exp_dir: str) -> pd.DataFrame:
             print(f"Could not find parameters in {exp_metadata_path}")
             continue
 
-    return pd.DataFrame(data)
+    df = pd.DataFrame(data)
+    # sort df by experiment_number which is the last part of the exp_name
+    df['experiment_number'] = df['exp_name'].apply(lambda x: int(x.split('-')[-1]))
+    df.sort_values('experiment_number', inplace=True)
+    df.drop('experiment_number', axis=1, inplace=True)
+    return df
 
 def process_locust_data(exp_dir: str) -> pd.DataFrame:
     """
@@ -344,7 +364,14 @@ def process_locust_data(exp_dir: str) -> pd.DataFrame:
             print(f"Could not find parameters in {exp_metadata_path}")
             continue
 
-    return pd.DataFrame(data)
+    df = pd.DataFrame(data)
+    # sort df by experiment_number which is the last part of the exp_name
+    df['experiment_number'] = df['exp_name'].apply(lambda x: int(x.split('-')[-1]))
+    df.sort_values('experiment_number', inplace=True)
+    df.drop('experiment_number', axis=1, inplace=True)
+    return df
+
+
 
 
 
