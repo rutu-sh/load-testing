@@ -81,6 +81,9 @@ if [ "$tool" == "locust" ]; then
   nohup "$tool" "$@" --host="$url" >$out_file 2>&1 &
   pid="$!"
   all_subprocess_pids=$(pgrep -f "$tool ")
+elif [ "$tool" == "k6" ]; then
+  "$tool" "$@" -e URL="$url" >$out_file 2>&1 &
+  pid="$!"
 else
   "$tool" "$@" $url >$out_file 2>&1 &
   pid="$!"

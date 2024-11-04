@@ -5,7 +5,7 @@ Licensed to The Apache Software Foundation, http://www.apache.org/
 Benchmarking 192.168.1.2 (be patient)
 Completed 10000000 requests
 Completed 20000000 requests
-Finished 21776641 requests
+Finished 22052421 requests
 
 
 Server Software:        nginx/1.18.0
@@ -17,22 +17,22 @@ Document Length:        612 bytes
 
 Concurrency Level:      60
 Time taken for tests:   120.000 seconds
-Complete requests:      21776641
+Complete requests:      22052421
 Failed requests:        0
-Keep-Alive requests:    21558905
-Total transferred:      18705046793 bytes
-HTML transferred:       13327304904 bytes
-Requests per second:    181471.91 [#/sec] (mean)
-Time per request:       0.331 [ms] (mean)
-Time per request:       0.006 [ms] (mean, across all concurrent requests)
-Transfer rate:          152221.98 [Kbytes/sec] received
+Keep-Alive requests:    21831927
+Total transferred:      18941927169 bytes
+HTML transferred:       13496081652 bytes
+Requests per second:    183770.08 [#/sec] (mean)
+Time per request:       0.326 [ms] (mean)
+Time per request:       0.005 [ms] (mean, across all concurrent requests)
+Transfer rate:          154149.71 [Kbytes/sec] received
 
 Connection Times (ms)
               min  mean[+/-sd] median   max
-Connect:        0    0   0.0      0       7
-Processing:     0    0   0.1      0       7
-Waiting:        0    0   0.1      0       7
-Total:          0    0   0.1      0       7
+Connect:        0    0   0.0      0      10
+Processing:     0    0   0.1      0      16
+Waiting:        0    0   0.1      0      16
+Total:          0    0   0.1      0      16
 
 Percentage of the requests served within a certain time (ms)
   50%      0
@@ -43,4 +43,4 @@ Percentage of the requests served within a certain time (ms)
   95%      0
   98%      0
   99%      1
- 100%      7 (longest request)
+ 100%     16 (longest request)

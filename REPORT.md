@@ -8,9 +8,8 @@ In this report we present a qualitative and quantitative analysis of HTTP benchm
 2. Wrk2 (https://github.com/giltene/wrk2)
 3. Oha (https://github.com/hatoo/oha)
 4. Apache Benchmark (https://httpd.apache.org/docs/2.4/programs/ab.html)
-5. JMeter (https://jmeter.apache.org/)
-6. Locust (https://locust.io/)
-7. K6 (https://k6.io/)
+5. Locust (https://locust.io/)
+6. K6 (https://k6.io/)
 
 
 ## Experimental Setup
@@ -80,4 +79,25 @@ Through our experiments we have observed the following configurations affect the
 
 #### Wrk
 
-Wrk is a benchmarking tool written in C that is designed for testing HTTP servers. It is known for its high performance and low resource usage. Wrk supports multi-threading and can generate a high number of connections per second. It provides detailed latency and throughput statistics. 
+Wrk is a benchmarking tool written in C that is designed for testing HTTP servers. 
+
+Here are some of the key features of Wrk:
+1. **Supports Multi-Threading**: Wrk uses multiple threads to manage connections and send requests to the server. This allows it to simulate a large number of concurrent users.
+2. **Connections Keep-alive**: Wrk only supports keep-alive connections, which means that it reuses the same connection for multiple requests.
+3. **Lua Scripting**: Wrk allows you to write Lua scripts to customize the request generation process. This can be useful for testing complex scenarios.
+4. **Metrics**: Wrk provides the following metrics for each benchmark: 
+    - **Thread Metrics**:
+        - Latency: Average, Stdev, Max, +/- Stdev
+        - Req/Sec: Average, Stdev, Max, +/- Stdev
+    - **Latency Distribution**:
+        - 50%, 75%, 90%, 99%
+    - **Number of requests**: Total
+    - **Requests/sec**: Total number of requests / duration
+    - **Transfer/sec**: Total number of bytes transferred / duration
+5. **Configuration**: Wrk allows configuring the following parameters:
+    - **Number of connections**: The total number of connections which will be distributed among threads.
+    - **Duration**: The duration for which the benchmark will run.
+    - **Number of threads**: The number of threads that will be used to send requests.
+    - **Script**: The Lua script that will be used to generate requests.
+    - **Timeout**: The timeout for each request.
+    - **Headers**: The headers that will be sent with each request.
