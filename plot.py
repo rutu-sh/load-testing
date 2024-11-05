@@ -34,15 +34,15 @@ snake_cased_strings = {
 
 
 
-def get_wrk_data(results_dir: str) -> pd.DataFrame:
+def get_tool_data(tool: str, results_dir: str) -> pd.DataFrame:
     # Read the data
-    wrk_data = pd.read_csv(f"{results_dir}/wrk.csv")
+    wrk_data = pd.read_csv(f"{results_dir}/{tool}.csv")
     return wrk_data
 
 
 def plot_rps_vs_avg_cpu(df: pd.DataFrame, tool: str):
     # Plot the data
-    fig = px.scatter(df, x="avg_cpu", y="rps", color="exp_name", title="RPS vs Avg CPU")
+    fig = px.scatter(df, x="avg_cpu", y="rps", color="exp_name", title="RPS vs Avg CPU", color_discrete_sequence=px.colors.qualitative.Dark24)
     fig.update_layout(legend=dict(x=1.05, y=1))
     fig.write_image(f"plots/{tool}_rps_vs_avg_cpu.png")
 
@@ -54,7 +54,8 @@ def plot_rps_vs_avg_mem(df: pd.DataFrame, tool: str):
         x="avg_memory", 
         y="rps", 
         color="exp_name", 
-        title="RPS vs Avg Mem")
+        title="RPS vs Avg Mem",
+        color_discrete_sequence=px.colors.qualitative.Dark24)
     fig.update_layout(legend=dict(x=1.05, y=1))
     fig.write_image(f"plots/{tool}_rps_vs_avg_mem.png")
 
@@ -95,6 +96,7 @@ def compare_experiments_grid(exps: List[Experiment]):
     metrics_y = [ResultsMetrics.CPU, ResultsMetrics.MEM, ResultsMetrics.BANDWIDTH_UTIL, ResultsMetrics.OPEN_SOCKETS]
     metrics_x = [ResultsMetrics.TIME for _ in metrics_y]
 
+    # colors = px.colors.qualitative.Dark24
     colors = px.colors.qualitative.Plotly
     exp_colors = {exp.name: colors[i] for i, exp in enumerate(exps)}
 
@@ -115,12 +117,14 @@ def compare_experiments_grid(exps: List[Experiment]):
             trace = go.Scatter(x=df_exp[metric_x], y=df_exp[metric_y], mode="lines", name=exp.name, line=dict(color=exp_colors[exp.name]), showlegend=(i == 0))
             fig.add_trace(trace, row=(i // 2) + 1, col=(i % 2) + 1)
     
-    fig.update_layout(legend=dict(x=1.05, y=1))
+    fig.update_layout(
+        legend=dict(x=1.05, y=1)
+    )
     fig.write_image(f"plots/{'_'.join([exp.name for exp in exps])}_comparison.png")
 
 def main():
     # Get the data
-    wrk_data = get_wrk_data("results")
+    # wrk_data = get_tool_data("wrk", "results")
 
     # Plot the data
     # plot_rps_vs_avg_cpu(wrk_data, "wrk")
@@ -149,11 +153,41 @@ def main():
     #     Experiment(name="wrk-7", tool="wrk"),
     #     Experiment(name="wrk-8", tool="wrk")       
     # ])
+    # compare_experiments_grid([
+    #     Experiment(name="wrk-10", tool="wrk")
+    # ])
+
+    # wrk2_data = get_tool_data("wrk2", "results")
+    # plot_rps_vs_avg_cpu(wrk2_data, "wrk2")
+    # plot_rps_vs_avg_mem(wrk2_data, "wrk2")
+    # compare_experiments_grid([
+    #     Experiment(name="wrk2-1", tool="wrk2"),
+    #     Experiment(name="wrk2-2", tool="wrk2"),
+    #     Experiment(name="wrk2-3", tool="wrk2"),
+    #     Experiment(name="wrk2-4", tool="wrk2")
+    # ])
+    # compare_experiments_grid([
+    #     Experiment(name="wrk2-5", tool="wrk2"),
+    #     Experiment(name="wrk2-6", tool="wrk2"),
+    #     Experiment(name="wrk2-7", tool="wrk2"),
+    #     Experiment(name="wrk2-8", tool="wrk2")
+    # ])
+    # compare_experiments_grid([
+    #     Experiment(name="wrk2-8", tool="wrk2"),
+    #     Experiment(name="wrk2-9", tool="wrk2"),
+    # ])
+    # compare_experiments_grid([
+    #     Experiment(name="wrk2-8", tool="wrk2"),
+    #     Experiment(name="wrk2-11", tool="wrk2")
+    # ])
+    # compare_experiments_grid([
+    #     Experiment(name="wrk2-12", tool="wrk2"),
+    #     Experiment(name="wrk2-13", tool="wrk2")
+    # ])
     compare_experiments_grid([
-        Experiment(name="wrk-10", tool="wrk")
+        Experiment(name="wrk2-13", tool="wrk2"),
+        Experiment(name="wrk2-14", tool="wrk2")
     ])
-
-
 
 if __name__ == "__main__":
     main()
