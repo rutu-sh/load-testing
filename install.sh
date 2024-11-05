@@ -68,7 +68,7 @@ function install_ab {
 }
 
 function setup_loadgen {
-    sudo apt-get update -y && sudo apt-get install -y smem jq iftop ifstat ethtool
+    sudo apt-get update -y && sudo apt-get install -y smem jq iftop ifstat ethtool tcpdump
 }
 
 

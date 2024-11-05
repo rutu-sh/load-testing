@@ -1,4 +1,4 @@
 tool,exp_name,connections,threads,disable_keepalive,requests,results_path,out_path,rps,n_requests,avg_cpu,avg_memory,avg_bandwidth,avg_bandwidth_utilization,avg_open_sockets
-ab,ab-1,60,60,False,,experiments/ab/ab-1/results.csv,experiments/ab/ab-1/out.txt,184448.8,100000000,99.88571428571427,209295.7857142857,163387.98357142857,12.765,56.57142857142857
-ab,ab-2,60,120,False,,experiments/ab/ab-2/results.csv,experiments/ab/ab-2/out.txt,181471.91,100000000,99.91851851851852,386940.14814814815,166471.06962962964,13.005925925925924,56.22222222222222
-ab,ab-3,60,120,True,,experiments/ab/ab-3/results.csv,experiments/ab/ab-3/out.txt,36410.79,900000,98.30000000000001,6236.5,54180.3,4.234999999999999,4.5
+ab,ab-1,60,60,False,,experiments/ab/ab-1/results.csv,experiments/ab/ab-1/out.txt,162058.08,100000000,99.89230769230768,166273.92307692306,154559.7746153846,12.074615384615386,56.53846153846154
+ab,ab-2,60,120,False,,experiments/ab/ab-2/results.csv,experiments/ab/ab-2/out.txt,183770.08,100000000,99.91851851851852,395234.22222222225,168450.19518518518,13.15962962962963,56.370370370370374
+ab,ab-3,60,120,True,,experiments/ab/ab-3/results.csv,experiments/ab/ab-3/out.txt,36747.33,900000,99.67999999999999,15201.4,52396.68,4.096,1.4
