@@ -417,6 +417,96 @@ The experiments from `oha-1` to `oha-4` show the results of increasing the durat
 
 The graphs show that the CPU utilization is consistent across all experiments, the memory utilization increases with the duration of the experiment. The bandwidth utilization is also similar. The number of open sockets, however, oscillate between 35 and 50. 
 
+## Apache Benchmark
+
+Apache Benchmark (ab) is a command-line tool for benchmarking HTTP servers. It is part of the Apache HTTP server project and is used to test the performance of web servers. 
+
+Here are some of the key features of Apache Benchmark: 
+
+1. **Single Threaded**: Apache Benchmark is Single-Threaded, therefore it can only simulate a limited number of concurrent users. 
+
+2. **Connections Keep-Alive**: Apache Benchmark supports both keep-alive and non-keep-alive connections.
+
+3. **Metrics**: Apache Benchmark provides the following metrics for each benchmark: 
+    - **Completed Requests**: The total number of requests that were completed.
+    - **Failed Requests**: The total number of requests that failed.
+    - **Requests per second**: The number of requests per second.
+    - **Time per request**: The average time taken for each request.
+    - **Transfer rate**: The average transfer rate for the requests.
+    - **Connection Times**: The average time taken for different stages of the connection process.
+    - **Percentage of the requests served within a certain time**: The percentage of requests that were served within a certain time.
+
+  
+Here is a sample output of running Apache Benchmark:
+
+```
+This is ApacheBench, Version 2.3 <$Revision: 1879490 $>
+Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
+Licensed to The Apache Software Foundation, http://www.apache.org/
+
+Benchmarking 192.168.1.2 (be patient)
+Finished 9723488 requests
+
+
+Server Software:        nginx/1.18.0
+Server Hostname:        192.168.1.2
+Server Port:            80
+
+Document Path:          /
+Document Length:        612 bytes
+
+Concurrency Level:      60
+Time taken for tests:   60.000 seconds
+Complete requests:      9723488
+Failed requests:        0
+Keep-Alive requests:    9626284
+Total transferred:      8351990172 bytes
+HTML transferred:       5950774656 bytes
+Requests per second:    162058.08 [#/sec] (mean)
+Time per request:       0.370 [ms] (mean)
+Time per request:       0.006 [ms] (mean, across all concurrent requests)
+Transfer rate:          135937.29 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        0    0   0.0      0       2
+Processing:     0    0   0.1      0      12
+Waiting:        0    0   0.1      0      12
+Total:          0    0   0.1      0      12
+
+Percentage of the requests served within a certain time (ms)
+  50%      0
+  66%      0
+  75%      0
+  80%      0
+  90%      0
+  95%      0
+  98%      1
+  99%      1
+ 100%     12 (longest request)
+```
+
+Here are some more details of the configurations we used to evaluate Apache Benchmark:
+
+|exp_name|connections|threads|disable_keepalive|requests|rps                               |n_requests                    |avg_cpu  |avg_memory        |avg_bandwidth     |avg_bandwidth_utilization|avg_open_sockets  |
+|--------|-----------|-------|-----------------|--------|----------------------------------|------------------------------|---------|------------------|------------------|-------------------------|------------------|
+|ab-1    |60         |60     |False            |        |162058.08                         |100000000                     |99.89230769230768|166273.92307692306|154559.7746153846 |12.074615384615386       |56.53846153846154 |
+|ab-2    |60         |120    |False            |        |183770.08                         |100000000                     |99.91851851851852|395234.22222222225|168450.19518518518|13.15962962962963        |56.370370370370374|
+|ab-3    |60         |120    |True             |        |36747.33                          |900000                        |99.67999999999999|15201.4           |52396.68          |4.096                    |1.4               |
+
+
+Here are some graphs that show the performance of Apache Benchmark against the different configurations:
+
+![RPS vs CPU Utilization](plots/ab_rps_vs_avg_cpu.png)
+
+![RPS vs Memory Utilization](plots/ab_rps_vs_avg_mem.png)
+
+The experiments from `ab-1` to `ab-2` show the results of increasing the number of threads from 60 to 120 while keeping the number of connections constant at 60. The RPS increases with the number of threads, and the CPU utilization also increases. 
+
+The experiment `ab-3` is the same configuration as `ab-2` but with keep-alive connections disabled. The RPS is significantly lower in this case, and the CPU and memory utilization is also lower. However, the experiment would abort abruptly and not complete all the requests.
+
+![Comparisons](plots/ab-1_ab-2_ab-3_comparison.png)
+
 
 ## Locust
 
@@ -547,3 +637,132 @@ Here is a comparison of all experiments which ran 200 users:
 
 ![Comparisons](plots/locust-1_locust-5_locust-8_locust-11_locust-14_locust-17_locust-21_comparison.png)
 
+
+## K6
+
+K6 is an open-source load testing tool written in Go. It is designed to be developer-friendly and easy to use. K6 allows you to write test scripts in JavaScript and run them from the command line. 
+
+Here are some of the key features of K6:
+
+1. **Supports Multi-Threading**: K6 uses multiple threads to manage connections and send requests to the server. This allows it to simulate a large number of concurrent users.
+
+2. **Connections Keep-Alive**: K6 supports both keep-alive and non-keep-alive connections.
+
+3. **Scripting**: K6 allows you to write test scripts in JavaScript. You can define user behavior, set up test scenarios, and run the test from the command line.
+
+4. **Metrics**: K6 provides a variety of configurations for the metrics needed for load testing. Some of the key metrics include:
+    - **Response Time**: The time taken to receive a response from the server.
+    - **Requests per Second**: The number of requests sent to the server per second.
+    - **Latency**: The time taken for a request to reach the server and receive a response.
+    - **Bandwidth**: The amount of data transferred between the client and the server.
+
+5. **Configuration**: K6 allows configuring a variety of parameters such as the number of VUs (Virtual Users), the duration of the test, the number of iterations, the request rate, and more. 
+
+Here is a sample output of running K6:
+
+```
+
+         /\      Grafana   /‾‾/  
+    /\  /  \     |\  __   /  /   
+   /  \/    \    | |/ /  /   ‾‾\ 
+  /          \   |   (  |  (‾)  |
+ / __________ \  |_|\_\  \_____/ 
+
+     execution: local
+        script: ./configs/k6/closed/script.js
+        output: -
+
+     scenarios: (100.00%) 1 scenario, 1 max VUs, 1m30s max duration (incl. graceful stop):
+              * default: 1 looping VUs for 1m0s (gracefulStop: 30s)
+running (1m00.0s), 1/1 VUs, 101327 complete and 0 interrupted iterations
+default   [ 100% ] 1 VUs  1m00.0s/1m0s
+
+     data_received..................: 87 MB  1.5 MB/s
+     data_sent......................: 7.8 MB 130 kB/s
+     http_req_blocked...............: avg=11.04µs  min=2.51µs   med=7.18µs   max=1.41ms   p(90)=8.71µs   p(95)=10.17µs 
+     http_req_connecting............: avg=2.46µs   min=0s       med=0s       max=619.99µs p(90)=0s       p(95)=0s      
+     http_req_duration..............: avg=461.03µs min=196.62µs med=458.92µs max=3.7ms    p(90)=524.19µs p(95)=533.43µs
+       { expected_response:true }...: avg=461.03µs min=196.62µs med=458.92µs max=3.7ms    p(90)=524.19µs p(95)=533.43µs
+     http_req_failed................: 0.00%  0 out of 101329
+     http_req_receiving.............: avg=75.98µs  min=25.63µs  med=74.01µs  max=3.25ms   p(90)=85.97µs  p(95)=92.74µs 
+     http_req_sending...............: avg=20.79µs  min=6.82µs   med=18.8µs   max=882.41µs p(90)=25.38µs  p(95)=27.71µs 
+     http_req_tls_handshaking.......: avg=0s       min=0s       med=0s       max=0s       p(90)=0s       p(95)=0s      
+     http_req_waiting...............: avg=364.26µs min=161.57µs med=363.59µs max=1.65ms   p(90)=426.59µs p(95)=432.15µs
+     http_reqs......................: 101329 1688.809819/s
+     iteration_duration.............: avg=570.07µs min=240.06µs med=565.28µs max=3.93ms   p(90)=634.37µs p(95)=649µs   
+     iterations.....................: 101329 1688.809819/s
+     vus............................: 1      min=1           max=1
+     vus_max........................: 1      min=1           max=1
+
+
+running (1m00.0s), 0/1 VUs, 101329 complete and 0 interrupted iterations
+default ✓ [ 100% ] 1 VUs  1m0s
+```
+
+Here are the details of the configurations we used to evaluate K6:
+
+|exp_name|vus   |duration|rps |disable_keepalive|avg_cpu                           |avg_memory                    |avg_bandwidth|avg_bandwidth_utilization|avg_open_sockets  |
+|--------|------|--------|----|-----------------|----------------------------------|------------------------------|-------------|-------------------------|------------------|
+|k6-1    |500   |300     |169332.523538|False            |2403.9784615384615                |5139452.8                     |157059.01646153847|12.270307692307691       |483.6923076923077 |
+|k6-2    |500   |300     |170897.537883|False            |2409.486153846154                 |5181887.569230769             |158487.95015384615|12.381384615384615       |483.3076923076923 |
+|k6-3    |1     |120     |1673.031945|False            |80.89166666666667                 |56696.833333333336            |1681.38875   |0.13166666666666668      |0.875             |
+|k6-4    |2     |120     |4223.964344|False            |157.77083333333334                |84024.83333333333             |4240.526666666667|0.3316666666666666       |1.875             |
+|k6-5    |4     |120     |10020.032479|False            |289.1791666666666                 |146713.83333333334            |10064.144999999999|0.7866666666666666       |3.7083333333333335|
+|k6-6    |8     |120     |22655.490813|False            |606.5041666666667                 |286638.3333333333             |22738.512499999997|1.7770833333333333       |7.166666666666667 |
+|k6-7    |16    |120     |43779.077299|False            |1306.9708333333333                |508302.6666666667             |43857.35083333333|3.42625                  |14.916666666666666|
+|k6-8    |32    |120     |131395.412983|False            |1940.744                          |1541052.64                    |126885.484   |9.9132                   |29.28             |
+|k6-9    |64    |120     |216669.794354|False            |2933.7961538461536                |2562454.153846154             |200668.28576923074|15.676538461538463       |56.57692307692308 |
+|k6-10   |128   |120     |170279.152034|False            |2394.3076923076924                |2044722.4615384615            |158002.5673076923|12.344615384615386       |122.46153846153847|
+|k6-11   |256   |120     |170460.438123|False            |2411.6846153846154                |2039307.2307692308            |158207.00653846154|12.360384615384616       |240.69230769230768|
+|k6-12   |512   |120     |168834.704038|False            |2432.5038461538466                |2098300.153846154             |156512.85692307694|12.227307692307692       |483.46153846153845|
+|k6-13   |1024  |120     |166750.610143|False            |2551.338461538461                 |2170052.923076923             |154529.11807692307|12.071923076923078       |970.1153846153846 |
+|k6-14   |2048  |120     |164390.263923|False            |2695.942307692307                 |2374042.6153846155            |152241.89269230768|11.895                   |1938.6538461538462|
+|k6-15   |8     |120     |11104.999382|True             |637.5                             |164611.5                      |16192.337083333332|1.2654166666666666       |0.041666666666666664|
+
+
+
+
+Here are some graphs that show the performance of K6 against the different configurations:
+
+![RPS vs CPU Utilization](plots/k6_rps_vs_avg_cpu.png)
+
+![RPS vs Memory Utilization](plots/k6_rps_vs_avg_mem.png)
+
+**Open vs Closed Testing**
+
+We performed experiment `k6-1` with closed model with constant VUs and `k6-2` with closed model with parameters with a ramping arrival rate. 
+
+![Comparisons](plots/k6-1_k6-2_comparison.png)
+
+It can be observed that both experiments behave similarly according to the metrics we have collected. 
+
+The experiments from `k6-3` to `k6-14` show the results of doubling the number of VUS from 1 till 2048. 
+
+![Comparisons](plots/k6-3_k6-4_k6-5_k6-6_comparison.png)
+
+![Comparisons](plots/k6-7_k6-8_k6-9_k6-10_comparison.png)
+
+![Comparisons](plots/k6-11_k6-12_k6-13_k6-14_comparison.png)
+
+The RPS increases with the number of VUS, and the CPU utilization also increases. The memory utilization and bandwidth utilization also increase with the number of VUS. The number of open sockets also increases with the number of VUS.
+
+The experiment `k6-15` is the same configuration as `k6-6` but with keep-alive connections disabled. 
+
+![Comparisons](plots/k6-6_k6-15_comparison.png)
+
+# Comparing All Tools
+
+We now select the best performing configuration from each tool and compare them.
+
+## With Keep-Alive Connections
+
+Here are the best performing configurations for each tool with keep-alive connections and a run time of about 300 seconds: 
+
+| TOOL | Experiment | RPS | 
+|------|------------|-----|
+| OHA  | oha-0     | 175808.524 |
+| AB   | ab-0      | 183770.08 |
+| Locust | locust-0 | 170897.537883 |
+| wrk   | wrk-0       | 170897.537883 |
+| wrk2   | wrk2-0       | 170897.537883 |
+| K6   | k6-0       | 170897.537883 |

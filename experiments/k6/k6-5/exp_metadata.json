@@ -1,0 +1,10 @@
+{
+  "name": "k6-5",
+  "description": "increasing vus",
+  "parameters": [
+    "run",
+    "--vus 4",
+    "--duration 120s",
+    "./configs/k6/default/script.js"
+  ]
+}

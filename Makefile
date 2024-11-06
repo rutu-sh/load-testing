@@ -96,3 +96,23 @@ install-tool-remote:
 	$(MAKE) cl-sync-code NODE=${LOAD_GEN_NODE} && \
 	$(MAKE) cl-run-cmd NODE=${LOAD_GEN_NODE} COMMAND="cd ${REMOTE_DIR}/load-testing && TOOL=${TOOL} make install-tool" && \
 	echo "Tool installed remotely"
+
+
+perform-best-experiments:
+	$(MAKE) perform-experiment TOOL=wrk EXPERIMENT_NAME=wrk-0
+	sleep 30
+	$(MAKE) perform-experiment TOOL=wrk2 EXPERIMENT_NAME=wrk2-0
+	sleep 30
+	$(MAKE) perform-experiment TOOL=oha EXPERIMENT_NAME=oha-0
+	sleep 30
+	$(MAKE) perform-experiment TOOL=ab EXPERIMENT_NAME=ab-0
+	sleep 30
+	$(MAKE) perform-experiment TOOL=locust EXPERIMENT_NAME=locust-0
+	sleep 30
+	$(MAKE) perform-experiment TOOL=k6 EXPERIMENT_NAME=k6-0
+	sleep 30
+
+
+perform-best-experiments-remote:
+	$(MAKE) cl-run-cmd NODE=${LOAD_GEN_NODE} COMMAND="cd ${REMOTE_DIR}/load-testing && make perform-best-experiments" && \
+	$(MAKE) copy-results

@@ -120,6 +120,16 @@
                 "oha",
                 "small"
             ]
+        },
+        {
+            "name": "oha-0",
+            "description": "best performance oha experiment",
+            "parameters": [
+                "--no-tui",
+                "--latency-correction",
+                "-z 300s",
+                "-q 1000000"
+            ]
         }
     ],
     "wrk": [
@@ -283,6 +293,16 @@
             "tags": [
                 "wrk",
                 "medium"
+            ]
+        },
+        {
+            "name": "wrk-0",
+            "description": "best performance wrk experiment",
+            "parameters": [
+                "--latency",
+                "-t 10",
+                "-d 300s",
+                "-c 600"
             ]
         }
     ],
@@ -666,6 +686,17 @@
                 "wrk2",
                 "small"
             ]
+        },
+        {
+            "name": "wrk2-0",
+            "description": "best performance wrk2 experiment",
+            "parameters": [
+                "--u_latency",
+                "-t 2",
+                "-d 300s",
+                "-c 40",
+                "-R 256000"
+            ]
         }
     ],
     "ab": [
@@ -730,6 +761,18 @@
             "tags": [
                 "ab",
                 "small"
+            ]
+        },
+        {
+            "name": "ab-0",
+            "description": "best performance ab experiment",
+            "parameters": [
+                "-c 60",
+                "-t 120",
+                "-k",
+                "-r",
+                "-n 50000000",
+                "-e experiments/ab/ab-best/data.csv"
             ]
         }
     ],
@@ -1279,6 +1322,19 @@
                 "locust",
                 "small"
             ]
+        },
+        {
+            "name": "locust-0",
+            "description": "locust-0 basic locust experiment",
+            "parameters": [
+                "--headless",
+                "-f configs/locust/default/locustfile.py",
+                "-u 400",
+                "-r 400",
+                "--processes 8",
+                "--run-time 300s",
+                "--only-summary"
+            ]
         }
     ],
     "k6": [
@@ -1287,10 +1343,9 @@
             "description": "closed system",
             "parameters": [
                 "run",
-                "--vus 10",
-                "--duration 60s",
-                "./configs/k6/closed/script.js",
-                "--preallocated-vus 10"
+                "--vus 500",
+                "--duration 300s",
+                "./configs/k6/closed/script.js"
             ]
         },
         {
@@ -1298,9 +1353,150 @@
             "description": "open system",
             "parameters": [
                 "run",
-                "--vus 10",
-                "--duration 60s",
+                "--vus 500",
+                "--duration 300s",
                 "./configs/k6/open/script.js"
+            ]
+        },
+        {
+            "name": "k6-3",
+            "description": "increasing vus",
+            "parameters": [
+                "run",
+                "--vus 1",
+                "--duration 120s",
+                "./configs/k6/default/script.js"
+            ]
+        },
+        {
+            "name": "k6-4",
+            "description": "increasing vus",
+            "parameters": [
+                "run",
+                "--vus 2",
+                "--duration 120s",
+                "./configs/k6/default/script.js"
+            ]
+        },
+        {
+            "name": "k6-5",
+            "description": "increasing vus",
+            "parameters": [
+                "run",
+                "--vus 4",
+                "--duration 120s",
+                "./configs/k6/default/script.js"
+            ]
+        },
+        {
+            "name": "k6-6",
+            "description": "increasing vus",
+            "parameters": [
+                "run",
+                "--vus 8",
+                "--duration 120s",
+                "./configs/k6/default/script.js"
+            ]
+        },
+        {
+            "name": "k6-7",
+            "description": "increasing vus",
+            "parameters": [
+                "run",
+                "--vus 16",
+                "--duration 120s",
+                "./configs/k6/default/script.js"
+            ]
+        },
+        {
+            "name": "k6-8",
+            "description": "increasing vus",
+            "parameters": [
+                "run",
+                "--vus 32",
+                "--duration 120s",
+                "./configs/k6/default/script.js"
+            ]
+        },
+        {
+            "name": "k6-9",
+            "description": "increasing vus",
+            "parameters": [
+                "run",
+                "--vus 64",
+                "--duration 120s",
+                "./configs/k6/default/script.js"
+            ]
+        },
+        {
+            "name": "k6-10",
+            "description": "increasing vus",
+            "parameters": [
+                "run",
+                "--vus 128",
+                "--duration 120s",
+                "./configs/k6/default/script.js"
+            ]
+        },
+        {
+            "name": "k6-11",
+            "description": "increasing vus",
+            "parameters": [
+                "run",
+                "--vus 256",
+                "--duration 120s",
+                "./configs/k6/default/script.js"
+            ]
+        },
+        {
+            "name": "k6-12",
+            "description": "increasing vus",
+            "parameters": [
+                "run",
+                "--vus 512",
+                "--duration 120s",
+                "./configs/k6/default/script.js"
+            ]
+        },
+        {
+            "name": "k6-13",
+            "description": "increasing vus",
+            "parameters": [
+                "run",
+                "--vus 1024",
+                "--duration 120s",
+                "./configs/k6/default/script.js"
+            ]
+        },
+        {
+            "name": "k6-14",
+            "description": "increasing vus",
+            "parameters": [
+                "run",
+                "--vus 2048",
+                "--duration 120s",
+                "./configs/k6/default/script.js"
+            ]
+        },
+        {
+            "name": "k6-15",
+            "description": "increasing vus",
+            "parameters": [
+                "run",
+                "--vus 8",
+                "--duration 120s",
+                "--no-connection-reuse",
+                "./configs/k6/default/script.js"
+            ]
+        },
+        {
+            "name": "k6-0",
+            "description": "best performance k6 experiment",
+            "parameters": [
+                "run",
+                "--vus 8",
+                "--duration 300s",
+                "./configs/k6/default/script.js"
             ]
         }
     ],

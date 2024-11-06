@@ -68,6 +68,18 @@ def get_locust_rps(out_path: str) -> int:
                 return float(line.split()[9])
     return None
 
+def get_k6_rps(out_path: str) -> int:
+    """
+    Get the requests per second from the k6 output file
+    """
+    with open(out_path, 'r') as f:
+        for line in f:
+            if 'http_reqs' in line:
+                rps = line.split()[2]
+                rps = rps.replace('/s', '')
+                return float(rps)
+    return None
+
 def process_wrk_data(exp_dir: str) -> pd.DataFrame:
     """
         Extract the following from the exp_metadata.json:
@@ -372,37 +384,98 @@ def process_locust_data(exp_dir: str) -> pd.DataFrame:
     return df
 
 
+def process_k6_data(exp_dir: str) -> pd.DataFrame:
+    """
+    Extract the following from the exp_metadata.json:
+        1. Number of VUs (-u or --vus)
+        2. Duration of the test (-d or --duration)
+        3. Number of iterations (--iterations)
+        4. Disable Keepalive (--no-connection-reuse)
+    """
+    RE_VUS_PATTERN = re.compile(r'-u|--vus')
+    RE_DURATION_PATTERN = re.compile(r'-d|--duration')
+    RE_ITERATIONS_PATTERN = re.compile(r'--iterations')
+    RE_DISABLE_KEEPALIVE_PATTERN = re.compile(r'--no-connection-reuse')
 
+    experiments = os.listdir(exp_dir)
+    data = []
+    for exp in experiments:
+        exp_metadata_path = os.path.join(exp_dir, exp, 'exp_metadata.json')
+        print(exp_metadata_path)
+        with open(exp_metadata_path, 'r') as f:
+            exp_metadata = json.load(f)
 
+        try:
+            parameters = exp_metadata['parameters']
+            new_data = {
+                "tool": "k6",
+                "exp_name": exp,
+                "vus": None,
+                "duration": None,
+                "iterations": None,
+                "results_path": os.path.join(exp_dir, exp, 'results.csv'),
+                "rps": get_k6_rps(os.path.join(exp_dir, exp, 'out.txt')),
+                "disable_keepalive": False
+            }
+            for param in parameters:
+                if re.match(RE_VUS_PATTERN, param):
+                    new_data["vus"] = param.split()[-1] if param.split()[-1].isdigit() else None
+                elif re.match(RE_DURATION_PATTERN, param):
+                    new_data["duration"] = duration_to_seconds(param.split()[-1])
+                elif re.match(RE_ITERATIONS_PATTERN, param):
+                    new_data["iterations"] = param.split()[-1] if param.split()[-1].isdigit() else None
+                elif re.match(RE_DISABLE_KEEPALIVE_PATTERN, param):
+                    new_data["disable_keepalive"] = True
+                else:
+                    continue
+                
+            avg_stats = calculate_averages(new_data["results_path"])
+            new_data.update(avg_stats) 
+            data.append(new_data)
 
+        except KeyError:
+            print(f"Could not find parameters in {exp_metadata_path}")
+            continue
+
+    df = pd.DataFrame(data)
+    # sort df by experiment_number which is the last part of the exp_name
+    df['experiment_number'] = df['exp_name'].apply(lambda x: int(x.split('-')[-1]))
+    df.sort_values('experiment_number', inplace=True)
+    df.drop('experiment_number', axis=1, inplace=True)
+    return df
 
 def main():
     os.makedirs('results', exist_ok=True)
 
-    exp_dir = 'experiments/wrk'
-    wrk_data = process_wrk_data(exp_dir)
-    wrk_data.to_csv('results/wrk.csv', index=False)
-    print(wrk_data)
+    # exp_dir = 'experiments/wrk'
+    # wrk_data = process_wrk_data(exp_dir)
+    # wrk_data.to_csv('results/wrk.csv', index=False)
+    # print(wrk_data)
 
-    exp_dir = 'experiments/wrk2'
-    wrk2_data = process_wrk2_data(exp_dir)
-    wrk2_data.to_csv('results/wrk2.csv', index=False)
-    print(wrk2_data)
+    # exp_dir = 'experiments/wrk2'
+    # wrk2_data = process_wrk2_data(exp_dir)
+    # wrk2_data.to_csv('results/wrk2.csv', index=False)
+    # print(wrk2_data)
 
-    exp_dir = 'experiments/oha'
-    oha_data = process_oha_data(exp_dir)
-    oha_data.to_csv('results/oha.csv', index=False)
-    print(oha_data)
+    # exp_dir = 'experiments/oha'
+    # oha_data = process_oha_data(exp_dir)
+    # oha_data.to_csv('results/oha.csv', index=False)
+    # print(oha_data)
 
-    exp_dir = 'experiments/ab'
-    ab_data = process_ab_data(exp_dir)
-    ab_data.to_csv('results/ab.csv', index=False)
-    print(ab_data)
+    # exp_dir = 'experiments/ab'
+    # ab_data = process_ab_data(exp_dir)
+    # ab_data.to_csv('results/ab.csv', index=False)
+    # print(ab_data)
 
-    exp_dir = 'experiments/locust'
-    locust_data = process_locust_data(exp_dir)
-    locust_data.to_csv('results/locust.csv', index=False)
-    print(locust_data)
+    # exp_dir = 'experiments/locust'
+    # locust_data = process_locust_data(exp_dir)
+    # locust_data.to_csv('results/locust.csv', index=False)
+    # print(locust_data)
+
+    exp_dir = 'experiments/k6'
+    k6_data = process_k6_data(exp_dir)
+    k6_data.to_csv('results/k6.csv', index=False)
+    print(k6_data)
 
 
 

@@ -5,7 +5,7 @@ const url = __ENV.URL;
 export const options = {
   scenarios: {
     closed_model: {
-      executor: 'constant-vus'
+      executor: 'constant-vus',
     }
   }
 };

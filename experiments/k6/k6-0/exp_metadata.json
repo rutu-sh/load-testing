@@ -1,0 +1,10 @@
+{
+  "name": "k6-0",
+  "description": "best performance k6 experiment",
+  "parameters": [
+    "run",
+    "--vus 8",
+    "--duration 300s",
+    "./configs/k6/default/script.js"
+  ]
+}

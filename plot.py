@@ -198,26 +198,72 @@ def main():
     # plot_rps_vs_avg_cpu(oha_data, "oha")
     # plot_rps_vs_avg_mem(oha_data, "oha")
 
-    # compare_experiments_grid([
-    #     Experiment(name="k6-1", tool="k6"),
-    #     Experiment(name="k6-2", tool="k6")
-    # ])
-
     #])
     # compare_experiments_grid([
     #     Experiment(name="locust-5", tool="locust"),
     #     Experiment(name="locust-6", tool="locust"),
     #     Experiment(name="locust-7", tool="locust")
     # ])
+    # compare_experiments_grid([
+    #     Experiment(name="locust-1", tool="locust"),
+    #     Experiment(name="locust-5", tool="locust"),
+    #     Experiment(name="locust-8", tool="locust"),
+    #     Experiment(name="locust-11", tool="locust"),
+    #     Experiment(name="locust-14", tool="locust"),
+    #     Experiment(name="locust-17", tool="locust"),
+    #     Experiment(name="locust-21", tool="locust"),
+    # ])
+
+    # compare_experiments_grid([
+    #     Experiment(name="k6-1", tool="k6"),
+    #     Experiment(name="k6-2", tool="k6")
+    # ])
+
+    # k6_data = get_tool_data("k6", "results")
+    # plot_rps_vs_avg_cpu(k6_data, "k6")
+    # plot_rps_vs_avg_mem(k6_data, "k6")
+
+    # compare_experiments_grid([
+    #     Experiment(name="k6-1", tool="k6"),
+    #     Experiment(name="k6-2", tool="k6")
+    # ])
+
+    # ab_data = get_tool_data("ab", "results")
+    # plot_rps_vs_avg_cpu(ab_data, "ab")
+    # plot_rps_vs_avg_mem(ab_data, "ab")
+
+    # compare_experiments_grid([
+    #     Experiment(name="ab-1", tool="ab"),
+    #     Experiment(name="ab-2", tool="ab"),
+    #     Experiment(name="ab-3", tool="ab"),
+    # ])
+
+    # compare_experiments_grid([
+    #     Experiment(name="k6-3", tool="k6"),
+    #     Experiment(name="k6-4", tool="k6"),
+    #     Experiment(name="k6-5", tool="k6"),
+    #     Experiment(name="k6-6", tool="k6")
+    # ])
+
+    # compare_experiments_grid([
+    #     Experiment(name="k6-7", tool="k6"),
+    #     Experiment(name="k6-8", tool="k6"),
+    #     Experiment(name="k6-9", tool="k6"),
+    #     Experiment(name="k6-10", tool="k6")
+    # ])
+
+    # compare_experiments_grid([
+    #     Experiment(name="k6-11", tool="k6"),
+    #     Experiment(name="k6-12", tool="k6"),
+    #     Experiment(name="k6-13", tool="k6"),
+    #     Experiment(name="k6-14", tool="k6")
+    # ])
+
     compare_experiments_grid([
-        Experiment(name="locust-1", tool="locust"),
-        Experiment(name="locust-5", tool="locust"),
-        Experiment(name="locust-8", tool="locust"),
-        Experiment(name="locust-11", tool="locust"),
-        Experiment(name="locust-14", tool="locust"),
-        Experiment(name="locust-17", tool="locust"),
-        Experiment(name="locust-21", tool="locust"),
+        Experiment(name="k6-6", tool="k6"),
+        Experiment(name="k6-15", tool="k6"),
     ])
+
 
 
 if __name__ == "__main__":
