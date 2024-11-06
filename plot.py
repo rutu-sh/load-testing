@@ -184,10 +184,41 @@ def main():
     #     Experiment(name="wrk2-12", tool="wrk2"),
     #     Experiment(name="wrk2-13", tool="wrk2")
     # ])
+    # compare_experiments_grid([
+    #     Experiment(name="wrk2-13", tool="wrk2"),
+    #     Experiment(name="wrk2-14", tool="wrk2")
+    # ])
+    # compare_experiments_grid([
+    #     Experiment(name="oha-1", tool="oha"),
+    #     Experiment(name="oha-2", tool="oha"),
+    #     Experiment(name="oha-3", tool="oha"),
+    #     Experiment(name="oha-4", tool="oha"),
+    # ])
+    # oha_data = get_tool_data("oha", "results")
+    # plot_rps_vs_avg_cpu(oha_data, "oha")
+    # plot_rps_vs_avg_mem(oha_data, "oha")
+
+    # compare_experiments_grid([
+    #     Experiment(name="k6-1", tool="k6"),
+    #     Experiment(name="k6-2", tool="k6")
+    # ])
+
+    #])
+    # compare_experiments_grid([
+    #     Experiment(name="locust-5", tool="locust"),
+    #     Experiment(name="locust-6", tool="locust"),
+    #     Experiment(name="locust-7", tool="locust")
+    # ])
     compare_experiments_grid([
-        Experiment(name="wrk2-13", tool="wrk2"),
-        Experiment(name="wrk2-14", tool="wrk2")
+        Experiment(name="locust-1", tool="locust"),
+        Experiment(name="locust-5", tool="locust"),
+        Experiment(name="locust-8", tool="locust"),
+        Experiment(name="locust-11", tool="locust"),
+        Experiment(name="locust-14", tool="locust"),
+        Experiment(name="locust-17", tool="locust"),
+        Experiment(name="locust-21", tool="locust"),
     ])
+
 
 if __name__ == "__main__":
     main()

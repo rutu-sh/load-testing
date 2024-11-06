@@ -1,0 +1,10 @@
+{
+  "name": "k6-2",
+  "description": "open system",
+  "parameters": [
+    "run",
+    "--vus 10",
+    "--duration 60s",
+    "./configs/k6/open/script.js"
+  ]
+}

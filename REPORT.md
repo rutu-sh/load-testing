@@ -83,7 +83,7 @@ Here's is a list showing each evaluated tool and the configurations it supports:
 | Wrk2              | Yes                   | Yes      | No                 | Yes          | Yes (Multi-Threading)            |
 | Oha               | Yes                   | Yes      | Yes                | Yes          | Yes (Multi-Threading)            |
 | Apache Benchmark  | Yes                   | Yes      | No                 | Yes          | No                               |
-| Locust            | Yes                   | Yes      | Yes                | Yes          | Yes (Multi-Processing)           |
+| Locust            | Yes                   | Yes      | No                | Yes          | Yes (Multi-Processing)           |
 | K6                | Yes                   | Yes      | Yes                | Yes          | Yes (Multi-Threading)            |
 
 
@@ -316,4 +316,234 @@ The comparison between `wrk2-13` and `wrk2-14` shows that increasing the number 
 ![Comparisons](plots/wrk2-13_wrk2-14_comparison.png)
 
 The experiments from `wrk2-15` to `wrk2-20` show that there is no significant increase in the RPS when the number of threads and connections are increased. 
+
+## Oha
+
+Oha is a HTTP Benchmarking tool written in Rust. It is designed to be simple and easy to use.
+
+Here are some of the key features of Oha:
+
+1. **Supports Multi-Threading**: Oha uses multiple threads to manage connections and send requests to the server. This allows it to simulate a large number of concurrent users.
+
+2. **Connections Keep-Alive**: Oha supports both keep-alive and non-keep-alive connections.
+
+3. **Latency Correction**: This feature allows Oha to avoid coordinated omission problem and provide more accurate latency measurements.
+
+4. **Burst Requests**: Oha allows specifying the number of requests to send in a burst.
+
+5. **HTTP/2 Support**: Oha supports HTTP/2 protocol.
+
+6. **Metrics**: Oha provides the following metrics for each benchmark: 
+    - **Success Rate**: The percentage of successful requests.
+    - **Request Statistics**:
+        - Slowest Request Time
+        - Fastest Request Time
+        - Average Request Time
+    - **Response Time Histogram**
+    - **Response Time Distribution**
+    - **Error Distribution**
+
+Here is a sample output of running oha:
+
+```
+Summary:
+  Success rate: 100.00%
+  Total:        60.0917 secs
+  Slowest:      49.7170 secs
+  Fastest:      0.0016 secs
+  Average:      25.4562 secs
+  Requests/sec: 168592.5052
+
+  Total data:   3.62 GiB
+  Size/request: 384 B
+  Size/sec:     61.74 MiB
+
+Response time histogram:
+   0.002 [1]       |
+   4.973 [969652]  |■■■■■■■■■■■■■■■■■■■■■■■■■■
+   9.945 [962422]  |■■■■■■■■■■■■■■■■■■■■■■■■■■
+  14.916 [999910]  |■■■■■■■■■■■■■■■■■■■■■■■■■■■
+  19.888 [936175]  |■■■■■■■■■■■■■■■■■■■■■■■■■
+  24.859 [1076384] |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+  29.831 [1001081] |■■■■■■■■■■■■■■■■■■■■■■■■■■■
+  34.802 [928429]  |■■■■■■■■■■■■■■■■■■■■■■■■■
+  39.774 [1021459] |■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+  44.745 [1069723] |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+  49.717 [1165771] |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+
+Response time distribution:
+  10.00% in 5.1734 secs
+  25.00% in 12.8476 secs
+  50.00% in 25.3718 secs
+  75.00% in 38.2460 secs
+  90.00% in 45.3449 secs
+  95.00% in 47.5622 secs
+  99.00% in 49.4089 secs
+  99.90% in 49.6738 secs
+  99.99% in 49.7126 secs
+
+
+Details (average, fastest, slowest):
+  DNS+dialup:   0.0002 secs, 0.0001 secs, 0.0035 secs
+  DNS-lookup:   0.0000 secs, 0.0000 secs, 0.0003 secs
+
+Status code distribution:
+  [200] 10131007 responses
+
+Error distribution:
+  [5] aborted due to deadline
+```
+
+Here are the details of the configurations we used to evaluate Oha:
+
+|exp_name|duration|qps|disable_keepalive|rps|avg_cpu                           |avg_memory                    |avg_bandwidth|avg_bandwidth_utilization|avg_open_sockets  |
+|--------|--------|---|-----------------|---|----------------------------------|------------------------------|-------------|-------------------------|------------------|
+|oha-1   |60      |1000000|False            |174445.1054|1136.25                           |952788.0                      |149359.83333333334|11.668333333333331       |46.083333333333336|
+|oha-2   |120     |1000000|False            |183634.582|1119.3                            |2019393.8333333333            |157456.67875 |12.300416666666669       |43.875            |
+|oha-3   |240     |1000000|False            |172160.6277|1150.9847826086957                |3795004.9565217393            |153254.0     |11.973043478260871       |44.82608695652174 |
+|oha-4   |480     |1000000|False            |175808.524|1135.7247311827957                |7831355.655913979             |155090.13268817205|12.11677419354839        |43.89247311827957 |
+|oha-5   |120     |1000000|True             |10298.1215|3894.217391304348                 |963064.3478260869             |11367.91304347826|0.8891304347826086       |6.695652173913044 |
+|oha-6   |480     |1000000|True             |   |3846.470588235294                 |726881.8823529412             |12916.805882352943|1.0094117647058825       |5.705882352941177 |
+
+Here are some graphs that show the performance of oha against the different configurations:
+
+![RPS vs CPU Utilization](plots/oha_rps_vs_avg_cpu.png)
+
+![RPS vs Memory Utilization](plots/oha_rps_vs_avg_mem.png)
+
+The experiments from `oha-1` to `oha-4` show the results of increasing the duration from 60 to 480 while keeping the qps constant at 1M, with the connections being kept alive. We don't see a significant increase in the RPS with the increase in the duration. 
+
+![Comparisons](plots/oha-1_oha-2_oha-3_oha-4_comparison.png)
+
+The graphs show that the CPU utilization is consistent across all experiments, the memory utilization increases with the duration of the experiment. The bandwidth utilization is also similar. The number of open sockets, however, oscillate between 35 and 50. 
+
+
+## Locust
+
+Locust is an open-source load testing tool written in Python. It allows you to define user behavior with Python code and simulate a large number of concurrent users making requests to the server. We use the FastHttpUser class in Locust which an upgraded version of the HttpUser class. 
+
+Here are some of the key features of Locust:
+
+1. **Supports Multi-Processing**: Locust can run in distributed mode as different processes on the same machine or on different machines. This allows it to simulate a large number of concurrent users. We, however, tested Locust in multi-processing mode on a single machine.
+
+2. **Connections Keep-Alive**: Locust reuses the same connection for multiple requests. It does not support non-keep-alive connections.
+
+3. **Web Interface**: Locust provides a web interface that allows you to monitor the progress of the test in real-time. You can see the number of users, the number of requests, the response time, and other metrics.
+
+4. **Metrics**: Locust provides the following metrics for each benchmark:
+    - Requests
+      - Number of requests
+      - Number of failures
+      - Requests per second
+      - Failures per second
+    - Response Time Percentiles
+      - 50%
+      - 66%
+      - 75%
+      - 80%
+      - 90%
+      - 95%
+      - 98%
+      - 99%
+      - 99.9%
+      - 99.99%
+      - 100%
+
+5. **Configuration**: Locust allows configuring the following parameters:
+    - **Number of users**: The number of concurrent users that will be simulated.
+    - **Hatch Rate**: The rate at which users will be spawned.
+    - **Stop on failure**: Whether the test should stop if a failure occurs.
+    - **Run time**: The duration for which the test will run.
+
+
+Here is a sample output of running Locust:
+
+```
+[2024-11-02 23:39:09,700] load-gen/INFO/locust.main: Starting Locust 2.32.1
+[2024-11-02 23:39:09,700] load-gen/INFO/locust.main: Run time limit set to 120 seconds
+[2024-11-02 23:39:09,701] load-gen/WARNING/locust.runners: Your selected spawn rate is very high (>100), and this is known to sometimes cause issues. Do you really need to ramp up that fast?
+[2024-11-02 23:39:09,701] load-gen/INFO/locust.runners: Ramping to 200 users at a rate of 200.00 per second
+[2024-11-02 23:39:09,718] load-gen/INFO/locust.runners: All users spawned: {"MyUser": 200} (200 total users)
+[2024-11-02 23:39:14,706] load-gen/WARNING/root: CPU usage above 90%! This may constrain your throughput and may even give inconsistent response time measurements! See https://docs.locust.io/en/stable/running-distributed.html for how to distribute the load over multiple CPU cores or machines
+[2024-11-02 23:41:09,462] load-gen/INFO/locust.main: --run-time limit reached, shutting down
+[2024-11-02 23:41:09,543] load-gen/WARNING/locust.runners: CPU usage was too high at some point during the test! See https://docs.locust.io/en/stable/running-distributed.html for how to distribute the load over multiple CPU cores or machines
+[2024-11-02 23:41:09,543] load-gen/INFO/locust.main: Shutting down (exit code 0)
+Type     Name                                                                          # reqs      # fails |    Avg     Min     Max    Med |   req/s  failures/s
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+GET      /                                                                             515233     0(0.00%) |      6       0     343      6 | 4299.36        0.00
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+         Aggregated                                                                    515233     0(0.00%) |      6       0     343      6 | 4299.36        0.00
+
+Response time percentiles (approximated)
+Type     Name                                                                                  50%    66%    75%    80%    90%    95%    98%    99%  99.9% 99.99%   100% # reqs
+--------|--------------------------------------------------------------------------------|--------|------|------|------|------|------|------|------|------|------|------|------
+GET      /                                                                                       6      8      9     10     11     16     17     50     69    180    340 515233
+--------|--------------------------------------------------------------------------------|--------|------|------|------|------|------|------|------|------|------|------|------
+         Aggregated                                                                              6      8      9     10     11     16     17     50     69    180    340 515233
+
+```
+
+
+Here are the details of the configurations we used to evaluate Locust:
+
+|exp_name|users |spawn_rate|processes|run_time|rps                               |avg_cpu                       |avg_memory|avg_bandwidth     |avg_bandwidth_utilization|avg_open_sockets  |
+|--------|------|----------|---------|--------|----------------------------------|------------------------------|----------|------------------|-------------------------|------------------|
+|locust-1|200   |200       |1        |120     |4299.36                           |197.28260869565213            |45615.52173913043|4046.588695652173 |0.3169565217391305       |187.2608695652174 |
+|locust-2|400   |400       |1        |120     |4289.87                           |197.0173913043478             |52731.34782608696|4045.4634782608696|0.31782608695652176      |375.39130434782606|
+|locust-3|500   |500       |1        |120     |4306.21                           |194.17391304347825            |56253.86956521739|4058.4491304347825|0.31739130434782614      |470.39130434782606|
+|locust-4|600   |600       |1        |120     |4395.51                           |195.3043478260869             |59678.086956521736|4143.336956521739 |0.32521739130434785      |561.7391304347826 |
+|locust-5|200   |200       |2        |120     |8566.03                           |381.0625                      |67814.45833333333|7221.317916666667 |0.5633333333333334       |194.58333333333334|
+|locust-6|400   |400       |2        |120     |8823.07                           |378.5541666666666             |74973.41666666667|7963.5529166666665|0.6225                   |379.0             |
+|locust-7|600   |600       |2        |120     |8164.12                           |381.36666666666673            |82022.125 |7375.772083333333 |0.5762499999999999       |568.7083333333334 |
+|locust-8|200   |200       |3        |120     |12611.62                          |567.65                        |78161.25  |10622.246249999998|0.8308333333333332       |194.58333333333334|
+|locust-9|400   |400       |3        |120     |12149.39                          |570.625                       |84760.75  |10313.178333333333|0.80625                  |382.7083333333333 |
+|locust-10|600   |600       |3        |120     |12609.18                          |568.2166666666667             |92367.95833333333|11380.270416666666|0.89                     |570.4583333333334 |
+|locust-11|200   |200       |4        |120     |17645.71                          |757.6583333333333             |89300.45833333333|14856.464999999998|1.16                     |196.79166666666666|
+|locust-12|400   |400       |4        |120     |17192.38                          |750.1416666666668             |94629.625 |14483.482916666666|1.1316666666666666       |383.3333333333333 |
+|locust-13|600   |600       |4        |120     |17263.57                          |754.0875000000001             |101597.875|14644.080000000002|1.1445833333333333       |574.3333333333334 |
+|locust-14|200   |200       |5        |120     |21111.22                          |940.6750000000001             |99077.375 |17770.38625       |1.3879166666666667       |195.625           |
+|locust-15|400   |400       |5        |120     |21104.13                          |945.2708333333334             |103869.29166666667|17774.067916666667|1.3895833333333332       |386.9583333333333 |
+|locust-16|600   |600       |5        |120     |20805.6                           |941.75                        |110574.75 |17582.132500000003|1.374583333333333        |575.0416666666666 |
+|locust-17|200   |200       |6        |120     |24764.56                          |1137.5291666666667            |109067.125|20842.30916666667 |1.6287500000000001       |200.0             |
+|locust-18|400   |400       |6        |120     |25005.18                          |1132.8208333333334            |115080.83333333333|21047.178333333333|1.6454166666666667       |390.0416666666667 |
+|locust-19|600   |600       |6        |120     |25362.3                           |1135.7375                     |121775.70833333333|21340.98875       |1.6670833333333333       |573.875           |
+|locust-20|800   |800       |6        |120     |24999.48                          |1132.9416666666666            |127677.625|21208.56125       |1.656666666666667        |763.5416666666666 |
+|locust-21|200   |200       |8        |120     |32387.29                          |1032.946153846154             |123962.38461538461|26386.853846153845|2.060769230769231        |196.3846153846154 |
+|locust-22|400   |400       |8        |120     |33549.74                          |1025.823076923077             |132475.0  |27310.474615384614|2.133076923076923        |376.9230769230769 |
+|locust-23|600   |600       |8        |120     |32415.27                          |1037.2076923076922            |137534.92307692306|26328.15692307692 |2.0576923076923075       |555.5384615384615 |
+|locust-24|800   |800       |8        |120     |32336.08                          |1037.3230769230768            |144195.61538461538|26357.24692307692 |2.0592307692307688       |741.1538461538462 |
+|locust-25|1000  |1000      |8        |120     |32416.23                          |1038.4076923076923            |149411.38461538462|26569.60076923077 |2.074615384615385        |919.5384615384615 |
+
+
+Here are some graphs that show the performance of Locust against the different configurations:
+
+![RPS vs CPU Utilization](plots/locust_rps_vs_avg_cpu.png)
+
+![RPS vs Memory Utilization](plots/locust_rps_vs_avg_mem.png)
+
+The experiments from `locust-1` to `locust-4` show the results of increasing the number of users from 200 to 600 while keeping the spawn rate constant at 200 and the number of processes at 1. The RPS increases linearly with the number of users, though not significantly. The CPU utilization is somewhat similar across all experiments, but the memory utilization increases with the number of users. Locust is able to maintain a consistent number of open sockets across all experiments.
+
+![Comparisons](plots/locust-1_locust-2_locust-3_locust-4_comparison.png)
+
+The experiments from `locust-5` to `locust-7` show the results of increasing the number of users from 200 to 600 while keeping the number of processes at 2. The RPS remains in the range of 8k to 9k, and the CPU utilization is also similar across all experiments. This shows that locust is able to utilize all the available CPU cores per process. The memory utilization increases with the number of users, and the bandwidth utilization is also similar across all experiments.
+
+![Comparisons](plots/locust-5_locust-6_locust-7_comparison.png)
+
+Similarly, we performed experiments with 3, 4, 5, 6, and 8 processes. The RPS increases with the number of processes, but the CPU utilization also increases. The memory utilization and bandwidth utilization also increase with the number of processes.
+
+Here is a comparison of all experiments which ran 200 users: 
+
+| Experiment | RPS | 
+|------------|-----|
+| locust-1   | 4299.36 |
+| locust-5   | 8566.03 |
+| locust-8   | 12611.62 |
+| locust-11  | 17645.71 |
+| locust-14  | 21111.22 |
+| locust-17  | 24764.56 |
+| locust-21  | 32387.29 |
+
+
+
+![Comparisons](plots/locust-1_locust-5_locust-8_locust-11_locust-14_locust-17_locust-21_comparison.png)
 

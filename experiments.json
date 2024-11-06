@@ -103,6 +103,23 @@
                 "oha",
                 "small"
             ]
+        },
+        {
+            "name": "oha-7",
+            "description": "oha-7 basic oha experiment",
+            "parameters": [
+                "--no-tui",
+                "--latency-correction",
+                "-z 60s",
+                "-q 300000"
+            ],
+            "experiment-categories": [
+                "time-based-rps-increase"
+            ],
+            "tags": [
+                "oha",
+                "small"
+            ]
         }
     ],
     "wrk": [
@@ -1267,12 +1284,23 @@
     "k6": [
         {
             "name": "k6-1",
-            "description": "k6-1 basic k6 experiment",
+            "description": "closed system",
             "parameters": [
                 "run",
                 "--vus 10",
                 "--duration 60s",
-                "./configs/k6/default/script.js"
+                "./configs/k6/closed/script.js",
+                "--preallocated-vus 10"
+            ]
+        },
+        {
+            "name": "k6-2",
+            "description": "open system",
+            "parameters": [
+                "run",
+                "--vus 10",
+                "--duration 60s",
+                "./configs/k6/open/script.js"
             ]
         }
     ],
