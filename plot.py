@@ -259,9 +259,18 @@ def main():
     #     Experiment(name="k6-14", tool="k6")
     # ])
 
+    # compare_experiments_grid([
+    #     Experiment(name="k6-6", tool="k6"),
+    #     Experiment(name="k6-15", tool="k6"),
+    # ])
+
     compare_experiments_grid([
-        Experiment(name="k6-6", tool="k6"),
-        Experiment(name="k6-15", tool="k6"),
+        Experiment(name="oha-2", tool="oha"),
+        Experiment(name="ab-2", tool="ab"),
+        Experiment(name="locust-25", tool="locust"),
+        Experiment(name="wrk-5", tool="wrk"),
+        Experiment(name="wrk2-19", tool="wrk2"),
+        Experiment(name="k6-9", tool="k6"),
     ])
 
 

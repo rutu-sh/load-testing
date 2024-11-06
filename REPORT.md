@@ -758,11 +758,14 @@ We now select the best performing configuration from each tool and compare them.
 
 Here are the best performing configurations for each tool with keep-alive connections and a run time of about 300 seconds: 
 
-| TOOL | Experiment | RPS | 
-|------|------------|-----|
-| OHA  | oha-0     | 175808.524 |
-| AB   | ab-0      | 183770.08 |
-| Locust | locust-0 | 170897.537883 |
-| wrk   | wrk-0       | 170897.537883 |
-| wrk2   | wrk2-0       | 170897.537883 |
-| K6   | k6-0       | 170897.537883 |
+| TOOL   | Experiment | RPS  |
+|--------|------------|------|
+| OHA    | oha-2      | 180k     |
+| AB     | ab-2       | 180k     |
+| Locust | locust-25   |  32k    |
+| wrk    | wrk-5      | 180k     |
+| wrk2   | wrk2-19     | 180k     |
+| K6     | k6-9       |  216k    |
+
+
+![Comparisons](plots/oha-2_ab-2_locust-25_wrk-5_wrk2-19_k6-9_comparison.png)
